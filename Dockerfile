@@ -21,8 +21,8 @@ FROM scratch
 ENV ZONEINFO zoneinfo.zip
 EXPOSE 1080
 
-HEALTHCHECK --retries=5 CMD [ "/api", "-url", "http://localhost:1080/health" ]
-ENTRYPOINT [ "/api" ]
+HEALTHCHECK --retries=5 CMD [ "/goweb", "-url", "http://localhost:1080/health" ]
+ENTRYPOINT [ "/goweb" ]
 
 ARG APP_VERSION
 ENV VERSION=${APP_VERSION}
@@ -30,4 +30,4 @@ ENV VERSION=${APP_VERSION}
 COPY doc /doc
 COPY --from=fetcher /app/cacert.pem /etc/ssl/certs/ca-certificates.crt
 COPY --from=fetcher /app/zoneinfo.zip /
-COPY --from=builder /app/bin/api /
+COPY --from=builder /app/bin/goweb /
