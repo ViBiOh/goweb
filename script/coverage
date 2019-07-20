@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+set -o nounset -o pipefail -o errexit
+readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+readonly OUTPUT_TXT="coverage.txt"
+readonly COVER_OUTPUT="profile.out"
+readonly COVER_MODE="atomic"
+readonly MODE="mode: ${COVER_MODE}"
+
+main() {
+  pushd "${SCRIPT_DIR}/../"
+
+  echo "${MODE}" > "${OUTPUT_TXT}"
+
+  for pkg in $(go list "${PACKAGES:-./...}"); do
+    go test -race -covermode="${COVER_MODE}" -coverprofile="${COVER_OUTPUT}" "${pkg}"
+
+    if [[ -f "${COVER_OUTPUT}" ]]; then
+      cat "${COVER_OUTPUT}" | grep -v "${MODE}" >> "${OUTPUT_TXT}" || true
+      rm "${COVER_OUTPUT}"
+    fi
+  done
+
+  go tool cover -func="${OUTPUT_TXT}"
+
+  popd
+}
+
+main

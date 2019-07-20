@@ -1,0 +1,60 @@
+jobs:
+  include:
+  - stage: Build
+
+    sudo: required
+    services:
+    - docker
+    script: docker build --build-arg CODECOV_TOKEN  --build-arg "APP_VERSION=$(make version)" -t "${DOCKER_USER}/$(make name):$(make version)" .
+    after_success:
+    - echo "${DOCKER_PASS}" | docker login -u "${DOCKER_USER}" --password-stdin
+    - docker push "${DOCKER_USER}/$(make name):$(make version)"
+
+  - stage: Release
+
+    language: go
+    go: 1.12
+    env:
+      - GO111MODULE=on
+      - GITHUB_REPOSITORY=ViBiOh/goweb
+      - GIT_TAG=${TRAVIS_TAG}
+      - RELEASE_NAME=${TRAVIS_TAG}
+    script: ./script/release
+
+  - stage: Publish
+
+    sudo: required
+    services:
+    - docker
+    script:
+    - echo "${DOCKER_PASS}" | docker login -u "${DOCKER_USER}" --password-stdin
+    - docker pull "${DOCKER_USER}/$(make name):$(make version)"
+    - docker tag "${DOCKER_USER}/$(make name):$(make version)" "${DOCKER_USER}/$(make name):latest"
+    - docker push "${DOCKER_USER}/$(make name):latest"
+    after_success:
+    - curl -s -X POST https://goreportcard.com/checks?repo=github.com/ViBiOh/goweb
+
+  - stage: Deploy
+
+    script: |
+     sed \
+        -e "s|\${DOCKER_USER}|${DOCKER_USER}|g" \
+        -e "s|\${DOMAIN}|${DOMAIN}|g" \
+        -e "s|\\\$|\$\$|g" \
+        docker-compose.yml > docker-compose-env.yml
+    deploy:
+      provider: script
+      skip_cleanup: true
+      script: bash script/deploy "$(make name)" "$(make version)" "@docker-compose-env.yml"
+
+stages:
+  - Build
+  - name: Release
+    if: tag =~ /^v\d+\.\d+\.\d+$/
+  - name: Publish
+    if: branch = master
+  - name: Deploy
+    if: branch = master
+
+notifications:
+  email: false

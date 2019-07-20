@@ -1,0 +1,50 @@
+openapi: 3.0.0
+info:
+  description: Golang Web API Template
+  title: API Template
+  version: '1.0.0'
+
+paths:
+  /health:
+    get:
+      description: Healthcheck of app
+      responses:
+        '204':
+          description: Everything is fine
+        '503':
+          description: App is shutting down
+
+  /version:
+    get:
+      description: Version of app
+
+      responses:
+        '200':
+          description: Version of app
+          content:
+            text/plain:
+              schema:
+                type: string
+
+  /hello/{name}:
+    get:
+      description: Say hello
+      parameters:
+        - name: name
+          in: path
+          description: Name to greet
+          required: false
+          schema:
+            type: string
+
+      responses:
+        '200':
+          description: Greeting message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  greeting:
+                    type: string
+                    description: Greeting sentence
