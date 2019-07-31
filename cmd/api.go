@@ -12,12 +12,10 @@ import (
 	"github.com/ViBiOh/httputils/pkg/alcotest"
 	"github.com/ViBiOh/httputils/pkg/cors"
 	"github.com/ViBiOh/httputils/pkg/gzip"
-	"github.com/ViBiOh/httputils/pkg/healthcheck"
 	"github.com/ViBiOh/httputils/pkg/logger"
 	"github.com/ViBiOh/httputils/pkg/opentracing"
 	"github.com/ViBiOh/httputils/pkg/owasp"
 	"github.com/ViBiOh/httputils/pkg/prometheus"
-	"github.com/ViBiOh/httputils/pkg/server"
 )
 
 const (
@@ -44,7 +42,6 @@ func main() {
 	serverApp, err := httputils.New(serverConfig)
 	logger.Fatal(err)
 
-	healthcheckApp := healthcheck.New()
 	prometheusApp := prometheus.New(prometheusConfig)
 	opentracingApp := opentracing.New(opentracingConfig)
 	gzipApp := gzip.New()
@@ -63,7 +60,7 @@ func main() {
 		http.ServeFile(w, r, path.Join(docPath, r.URL.Path))
 	})
 
-	httpHandler := server.ChainMiddlewares(handler, prometheusApp, opentracingApp, gzipApp, owaspApp, corsApp)
+	httpHandler := httputils.ChainMiddlewares(handler, prometheusApp, opentracingApp, gzipApp, owaspApp, corsApp)
 
-	serverApp.ListenAndServe(httpHandler, nil, healthcheckApp)
+	serverApp.ListenAndServe(httpHandler, httputils.HealthHandler(nil), nil)
 }
