@@ -6,15 +6,15 @@ COPY . .
 RUN make
 
 ARG CODECOV_TOKEN
-RUN curl -s https://codecov.io/bash | bash
+RUN curl -q -sS https://codecov.io/bash | bash
 
 FROM alpine as fetcher
 
 WORKDIR /app
 
 RUN apk --update add curl \
- && curl -s -o /app/cacert.pem https://curl.haxx.se/ca/cacert.pem \
- && curl -s -o /app/zoneinfo.zip https://raw.githubusercontent.com/golang/go/master/lib/time/zoneinfo.zip
+ && curl -q -sS -o /app/cacert.pem https://curl.haxx.se/ca/cacert.pem \
+ && curl -q -sS -o /app/zoneinfo.zip https://raw.githubusercontent.com/golang/go/master/lib/time/zoneinfo.zip
 
 FROM scratch
 
