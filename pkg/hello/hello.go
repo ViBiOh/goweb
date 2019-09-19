@@ -8,10 +8,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ViBiOh/httputils/pkg/httperror"
-	"github.com/ViBiOh/httputils/pkg/httpjson"
-	"github.com/ViBiOh/httputils/pkg/logger"
-	"github.com/ViBiOh/httputils/pkg/tools"
+	"github.com/ViBiOh/httputils/v2/pkg/httperror"
+	"github.com/ViBiOh/httputils/v2/pkg/httpjson"
+	"github.com/ViBiOh/httputils/v2/pkg/logger"
+	"github.com/ViBiOh/httputils/v2/pkg/tools"
 )
 
 // Hello represents the outputted welcome message
@@ -27,7 +27,7 @@ type Config struct {
 // Flags adds flags for configuring package
 func Flags(fs *flag.FlagSet, prefix string) Config {
 	return Config{
-		locationName: fs.String(tools.ToCamel(fmt.Sprintf("%sLocation", prefix)), "Europe/Paris", "[hello] TimeZone for displaying current time"),
+		locationName: tools.NewFlag(prefix, "hello").Name("Location").Default("Europe/Paris").Label("TimeZone for displaying current time").ToString(fs),
 	}
 }
 
