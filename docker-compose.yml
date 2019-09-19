@@ -12,13 +12,11 @@ services:
       traefik.http.routers.goweb-http.middlewares: redirect@file
       traefik.http.routers.goweb-https.rule: Host(`${DOMAIN}`)
       traefik.http.routers.goweb-https.entrypoints: https
-      traefik.http.routers.goweb-https.middlewares: compress@file
+      traefik.http.routers.goweb-https.middlewares: compress@file, web-limit@file
       traefik.http.routers.goweb-https.tls: true
       traefik.http.routers.goweb-https.tls.certResolver: default
       traefik.http.services.goweb-service.loadbalancer.passhostheader: true
       traefik.http.services.goweb-service.loadbalancer.server.port: '1080'
-      traefik.http.middlewares.goweb-rate-limit.ratelimit.average: '10'
-      traefik.http.middlewares.goweb-rate-limit.ratelimit.burst: '50'
     restart: on-failure:5
     read_only: true
     cpu_shares: 128
