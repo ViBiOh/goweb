@@ -3,9 +3,6 @@ version: '2'
 services:
   api:
     image: "${DOCKER_USER}/goweb"
-    command:
-    - -csp
-    - "default-src 'self'; base-uri 'self'; script-src 'self' 'unsafe-inline' unpkg.com/swagger-ui-dist@3/; style-src 'self' 'unsafe-inline' unpkg.com/swagger-ui-dist@3/; img-src 'self' data:"
     labels:
       traefik.http.routers.goweb-http.rule: Host(`${DOMAIN}`)
       traefik.http.routers.goweb-http.entrypoints: http
@@ -17,6 +14,8 @@ services:
       traefik.http.routers.goweb-https.tls.certResolver: default
       traefik.http.services.goweb-service.loadbalancer.passhostheader: true
       traefik.http.services.goweb-service.loadbalancer.server.port: '1080'
+    environment:
+      API_CSP: "default-src 'self'; base-uri 'self'; script-src 'self' 'unsafe-inline' unpkg.com/swagger-ui-dist@3/; style-src 'self' 'unsafe-inline' unpkg.com/swagger-ui-dist@3/; img-src 'self' data:"
     restart: on-failure:5
     read_only: true
     cpu_shares: 128
