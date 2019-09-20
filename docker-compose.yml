@@ -11,7 +11,7 @@ services:
       traefik.http.routers.goweb-https.entrypoints: https
       traefik.http.routers.goweb-https.middlewares: compress@file, web-limit@file
       traefik.http.routers.goweb-https.tls: true
-      traefik.http.routers.goweb-https.tls.certResolver: default
+      traefik.http.routers.goweb-https.tls.certresolver: default
       traefik.http.services.goweb-service.loadbalancer.passhostheader: true
       traefik.http.services.goweb-service.loadbalancer.server.port: '1080'
     environment:
