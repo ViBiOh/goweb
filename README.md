@@ -3,6 +3,7 @@
 [![Build Status](https://travis-ci.org/ViBiOh/goweb.svg?branch=master)](https://travis-ci.org/ViBiOh/goweb)
 [![codecov](https://codecov.io/gh/ViBiOh/goweb/branch/master/graph/badge.svg)](https://codecov.io/gh/ViBiOh/goweb)
 [![Go Report Card](https://goreportcard.com/badge/github.com/ViBiOh/goweb)](https://goreportcard.com/report/github.com/ViBiOh/goweb)
+[![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=ViBiOh/goweb)](https://dependabot.com)
 
 ## CI
 
