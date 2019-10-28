@@ -49,10 +49,6 @@ Usage of api:
         [http] Listen port {API_PORT} (default 1080)
   -prometheusPath string
         [prometheus] Path for exposing metrics {API_PROMETHEUS_PATH} (default "/metrics")
-  -tracingAgent string
-        [tracing] Jaeger Agent (e.g. host:port) {API_TRACING_AGENT} (default "jaeger:6831")
-  -tracingName string
-        [tracing] Service name {API_TRACING_NAME}
   -url string
         [alcotest] URL to check {API_URL}
   -userAgent string
