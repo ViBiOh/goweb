@@ -37,11 +37,11 @@ jobs:
       script: bash script/deploy "$(make name)" "@docker-compose-env.yml"
 
 stages:
-  - Build
-  - name: Publish
-    if: branch = master && type = push
-  - name: Deploy
-    if: branch = master && type = push
+- Build
+- name: Publish
+  if: branch = master && type = push
+- name: Deploy
+  if: false
 
 notifications:
   email: false
