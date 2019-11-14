@@ -21,7 +21,7 @@ jobs:
     - docker tag "${DOCKER_USER}/$(make name):$(make version)" "${DOCKER_USER}/$(make name):latest"
     - docker push "${DOCKER_USER}/$(make name):latest"
     after_success:
-    - curl -sSqL --max-time 10 -X POST https://goreportcard.com/checks?repo=github.com/ViBiOh/goweb
+    - curl -q -sSL --max-time 10 -X POST https://goreportcard.com/checks?repo=github.com/ViBiOh/goweb
 
   - stage: Deploy
 
