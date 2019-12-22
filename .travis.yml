@@ -39,7 +39,7 @@ stages:
   - name: Publish
     if: branch = master && type = push
   - name: Deploy
-    if: false
+    if: branch = master && type = push
 
 notifications:
   email: false
