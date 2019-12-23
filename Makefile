@@ -7,7 +7,6 @@ endif
 
 APP_NAME = goweb
 PACKAGES ?= ./...
-GO_FILES ?= $(shell find . -name "*.go")
 
 BINARY_PATH=bin/$(APP_NAME)
 
@@ -34,18 +33,18 @@ name:
 version:
 	@printf "%s" "$(shell git rev-parse --short HEAD)"
 
-## dev: Build app
-.PHONY: dev
-dev: format style test build
-
 ## app: Build whole app
 .PHONY: app
 app: init dev
 
-## init: Download dependencies
+## dev: Build app
+.PHONY: dev
+dev: format style test build
+
+## init: Bootstrap project
 .PHONY: init
 init:
-	@curl -q -sSL --max-time 10 "https://raw.githubusercontent.com/ViBiOh/scripts/master/bootstrap" | bash -s "git_hooks" "coverage" "release"
+	@curl -q -sSL --max-time 10 "https://raw.githubusercontent.com/ViBiOh/scripts/master/bootstrap" | bash -s "git_hooks" "coverage" "release" "deploy"
 	go get github.com/kisielk/errcheck
 	go get golang.org/x/lint/golint
 	go get golang.org/x/tools/cmd/goimports
@@ -54,8 +53,8 @@ init:
 ## format: Format code
 .PHONY: format
 format:
-	goimports -w $(GO_FILES)
-	gofmt -s -w $(GO_FILES)
+	goimports -w $(shell find . -name "*.go")
+	gofmt -s -w $(shell find . -name "*.go")
 
 ## style: Check code style
 .PHONY: style
@@ -75,7 +74,7 @@ test:
 build:
 	CGO_ENABLED=0 go build -ldflags="-s -w" -installsuffix nocgo -o $(BINARY_PATH) $(MAIN_SOURCE)
 
-## run: Run app
+## run: Run locally
 .PHONY: run
 run:
 	$(MAIN_RUNNER) \

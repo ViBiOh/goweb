@@ -45,7 +45,9 @@ Usage of api:
         [http] Key file {API_KEY}
   -location string
         [hello] TimeZone for displaying current time {API_LOCATION} (default "Europe/Paris")
-  -port int
+  -okStatus int
+        [http] Healthy HTTP Status code {API_OK_STATUS} (default 204)
+  -port uint
         [http] Listen port {API_PORT} (default 1080)
   -prometheusPath string
         [prometheus] Path for exposing metrics {API_PROMETHEUS_PATH} (default "/metrics")

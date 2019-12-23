@@ -4,5 +4,5 @@ scripts/
 # Golang
 bin/
 release/
-output.txt
 coverage.*
+profile.out

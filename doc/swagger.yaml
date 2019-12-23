@@ -1,3 +1,5 @@
+---
+
 openapi: 3.0.0
 info:
   description: Golang Web API Template
@@ -11,13 +13,10 @@ paths:
       responses:
         '204':
           description: Everything is fine
-        '503':
-          description: App is shutting down
 
   /version:
     get:
       description: Version of app
-
       responses:
         '200':
           description: Version of app
