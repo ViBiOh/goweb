@@ -29,7 +29,6 @@ ENTRYPOINT [ "/goweb" ]
 ARG APP_VERSION
 ENV VERSION=${APP_VERSION}
 
-COPY doc /doc
 COPY --from=fetcher /app/cacert.pem /etc/ssl/certs/ca-certificates.crt
 COPY --from=fetcher /app/zoneinfo.zip /
 COPY --from=builder /app/bin/goweb /
