@@ -51,6 +51,10 @@ Usage of api:
         [http] Listen port {API_PORT} (default 1080)
   -prometheusPath string
         [prometheus] Path for exposing metrics {API_PROMETHEUS_PATH} (default "/metrics")
+  -swaggerTitle string
+        [swagger] API Title {API_SWAGGER_TITLE} (default "API")
+  -swaggerVersion string
+        [swagger] API Version {API_SWAGGER_VERSION} (default "1.0.0")
   -url string
         [alcotest] URL to check {API_URL}
   -userAgent string

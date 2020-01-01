@@ -11,6 +11,7 @@ import (
 	"github.com/ViBiOh/httputils/v3/pkg/flags"
 	"github.com/ViBiOh/httputils/v3/pkg/httpjson"
 	"github.com/ViBiOh/httputils/v3/pkg/logger"
+	"github.com/ViBiOh/httputils/v3/pkg/swagger"
 )
 
 // Hello represents the outputted welcome message
@@ -50,4 +51,34 @@ func Handler(config Config) http.Handler {
 
 		httpjson.ResponseJSON(w, http.StatusOK, Hello{fmt.Sprintf("Hello %s, current time in %s is %v !", name, location.String(), time.Now().In(location))}, httpjson.IsPretty(r))
 	})
+}
+
+// Swagger provides swagger configuration for
+func Swagger() (swagger.Configuration, error) {
+	return swagger.Configuration{
+		Paths: `/hello/{name}:
+  get:
+    description: Say hello
+    parameters:
+      - name: name
+        in: path
+        description: Name to greet
+        required: false
+        schema:
+          type: string
+
+    responses:
+      200:
+        description: Greeting message
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Hello'`,
+		Components: `Hello:
+  type: object
+  properties:
+    greeting:
+      type: string
+      description: Greeting sentence`,
+	}, nil
 }
