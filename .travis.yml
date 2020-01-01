@@ -20,7 +20,7 @@ jobs:
       services:
         - docker
       script:
-        - curl -q -sSL --max-time 10 -X POST https://goreportcard.com/checks?repo=github.com/ViBiOh/goweb
+        - curl -q -sSL --max-time 10 -X POST https://goreportcard.com/checks?repo=github.com/${TRAVIS_REPO_SLUG}
         - curl -q -sSL --max-time 10 "https://raw.githubusercontent.com/ViBiOh/scripts/master/bootstrap" | bash -s "docker_promote"
         - echo "${DOCKER_PASS}" | docker login -u "${DOCKER_USER}" --password-stdin
         - scripts/docker_promote "${DOCKER_USER}/$(make name)" "$(make version)"
