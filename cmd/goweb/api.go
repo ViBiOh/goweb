@@ -6,6 +6,7 @@ import (
 	"os"
 	"strings"
 
+	"github.com/ViBiOh/goweb/pkg/dump"
 	"github.com/ViBiOh/goweb/pkg/hello"
 	"github.com/ViBiOh/httputils/v3/pkg/alcotest"
 	"github.com/ViBiOh/httputils/v3/pkg/cors"
@@ -18,6 +19,7 @@ import (
 
 const (
 	helloPath = "/hello"
+	dumpPath  = "/dump"
 )
 
 func main() {
@@ -45,11 +47,16 @@ func main() {
 	logger.Fatal(err)
 
 	helloHandler := http.StripPrefix(helloPath, hello.Handler(helloConfig))
+	dumpHandler := http.StripPrefix(dumpPath, dump.Handler())
 	swaggerHandler := swaggerApp.Handler()
 
 	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if strings.HasPrefix(r.URL.Path, helloPath) {
 			helloHandler.ServeHTTP(w, r)
+			return
+		}
+		if strings.HasPrefix(r.URL.Path, dumpPath) {
+			dumpHandler.ServeHTTP(w, r)
 			return
 		}
 
