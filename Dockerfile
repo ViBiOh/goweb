@@ -22,4 +22,4 @@ ARG ARCH
 
 COPY --from=fetcher /app/cacert.pem /etc/ssl/certs/ca-certificates.crt
 COPY --from=fetcher /app/zoneinfo.zip /
-COPY goweb_${OS}_${ARCH} /goweb
+COPY release/goweb_${OS}_${ARCH} /goweb
