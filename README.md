@@ -13,8 +13,6 @@ Following variables are required for CI:
 | Name | Purpose |
 |:--:|:--:|
 | **DOMAIN** | for setting Traefik domain for app |
-| **DEPLOY_URL** | for deploying app to server |
-| **DEPLOY_CREDENTIALS** | for deploying app to server |
 | **DOCKER_USER** | for publishing Docker image |
 | **DOCKER_PASS** | for publishing Docker image |
 
