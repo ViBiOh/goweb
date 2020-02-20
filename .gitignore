@@ -6,3 +6,7 @@ bin/
 release/
 coverage.*
 profile.out
+
+# Files
+cacert.pem
+zoneinfo.zip
