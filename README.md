@@ -38,6 +38,8 @@ Usage of api:
         [owasp] Content-Security-Policy {API_CSP} (default "default-src 'self'; base-uri 'self'")
   -frameOptions string
         [owasp] X-Frame-Options {API_FRAME_OPTIONS} (default "deny")
+  -graceDuration string
+        [http] Grace duration when SIGTERM received {API_GRACE_DURATION} (default "15s")
   -hsts
         [owasp] Indicate Strict Transport Security {API_HSTS} (default true)
   -key string
