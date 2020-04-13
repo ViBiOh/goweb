@@ -1,0 +1,36 @@
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: goweb-http
+spec:
+  entryPoints:
+    - http
+  routes:
+    - match: Host(`goweb.vibioh.fr`)
+      kind: Rule
+      middlewares:
+        - name: redirect
+      services:
+        - name: goweb
+          port: 80
+
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: goweb-https
+spec:
+  entryPoints:
+    - https
+  routes:
+    - match: Host(`goweb.vibioh.fr`)
+      kind: Rule
+      middlewares:
+        - name: compress
+        - name: ratelimit
+      services:
+        - name: goweb
+          port: 80
+  tls:
+    certResolver: default
