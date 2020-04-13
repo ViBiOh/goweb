@@ -15,6 +15,7 @@ Following variables are required for CI:
 | **DOMAIN** | for setting Traefik domain for app |
 | **DOCKER_USER** | for publishing Docker image |
 | **DOCKER_PASS** | for publishing Docker image |
+| **SCRIPTS_NO_INTERACTIVE** | for running scripts in CI |
 
 ## Usage
 
