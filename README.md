@@ -6,13 +6,22 @@
 [![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=ViBiOh/goweb)](https://dependabot.com)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ViBiOh_goweb&metric=alert_status)](https://sonarcloud.io/dashboard?id=ViBiOh_goweb)
 
+## Getting started
+
+Golang binary is built with static link. You can download it directly from the Github Release page or build it by yourself by cloning this repo and running make.
+
+A Docker image is available for amd64, arm and arm64 platforms on Docker Hub: vibioh/ketchup.
+
+You can configure app by passing CLI args or environment variables (cf. Usage section). CLI override environment variables.
+
+You'll find a Kubernetes exemple (without secrets) in the infra/ folder.
+
 ## CI
 
 Following variables are required for CI:
 
 | Name | Purpose |
 |:--:|:--:|
-| **DOMAIN** | for setting Traefik domain for app |
 | **DOCKER_USER** | for publishing Docker image |
 | **DOCKER_PASS** | for publishing Docker image |
 | **SCRIPTS_NO_INTERACTIVE** | for running scripts in CI |
