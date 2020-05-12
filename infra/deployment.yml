@@ -3,6 +3,10 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: goweb
+  labels:
+    app.kubernetes.io/name: goweb
+    app.kubernetes.io/instance: goweb
+    app.kubernetes.io/managed-by: kubectl
 spec:
   selector:
     matchLabels:
