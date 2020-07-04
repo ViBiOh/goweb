@@ -9,7 +9,7 @@
 
 Golang binary is built with static link. You can download it directly from the Github Release page or build it by yourself by cloning this repo and running make.
 
-A Docker image is available for amd64, arm and arm64 platforms on Docker Hub: vibioh/ketchup.
+A Docker image is available for amd64, arm and arm64 platforms on Docker Hub: vibioh/goweb.
 
 You can configure app by passing CLI args or environment variables (cf. Usage section). CLI override environment variables.
 
