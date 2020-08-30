@@ -55,6 +55,16 @@ Usage of api:
         [http] Key file {API_KEY}
   -location string
         [hello] TimeZone for displaying current time {API_LOCATION} (default "Europe/Paris")
+  -loggerJson
+        [logger] Log format as JSON {API_LOGGER_JSON}
+  -loggerLevel string
+        [logger] Logger level {API_LOGGER_LEVEL} (default "INFO")
+  -loggerLevelKey string
+        [logger] Key for level in JSON {API_LOGGER_LEVEL_KEY} (default "level")
+  -loggerMessageKey string
+        [logger] Key for message in JSON {API_LOGGER_MESSAGE_KEY} (default "message")
+  -loggerTimeKey string
+        [logger] Key for timestam in JSON {API_LOGGER_TIME_KEY} (default "time")
   -okStatus int
         [http] Healthy HTTP Status code {API_OK_STATUS} (default 204)
   -port uint
