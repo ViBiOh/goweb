@@ -1,0 +1,33 @@
+replicaCount: 1
+
+image:
+  repository: vibioh/goweb
+  pullPolicy: Always
+
+podAnnotations:
+  prometheus.io/scrape: "true"
+  prometheus.io/scheme: http
+  prometheus.io/port: "1080"
+
+livenessProbePath: /health
+readinessProbePath: /health
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  host: goweb.vibioh.fr
+
+resources:
+  limits:
+    cpu: 100m
+    memory: 64M
+  requests:
+    cpu: 100m
+    memory: 64M
+
+autoscaling:
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 80

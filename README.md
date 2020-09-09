@@ -13,7 +13,7 @@ A Docker image is available for amd64, arm and arm64 platforms on Docker Hub: vi
 
 You can configure app by passing CLI args or environment variables (cf. Usage section). CLI override environment variables.
 
-You'll find a Kubernetes exemple (without secrets) in the infra/ folder.
+You'll find a Helm Kubernetes exemple (without secrets) in the infra/ folder.
 
 ## CI
 

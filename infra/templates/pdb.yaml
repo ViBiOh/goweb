@@ -1,0 +1,12 @@
+---
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "goweb.fullname" . }}
+  labels:
+    {{- include "goweb.labels" . | nindent 4 }}
+spec:
+  minAvailable: {{ .Values.autoscaling.minReplicas }}
+  selector:
+    matchLabels:
+      {{- include "goweb.selectorLabels" . | nindent 6 }}
