@@ -31,6 +31,16 @@ Create chart name and version as used by the chart label.
 {{- end }}
 
 {{/*
+Ingress hosts
+*/}}
+{{- define "ingress.hosts" -}}
+  {{ range $count, $e := .Values.ingress.hosts -}}
+    {{- if gt $count 0 }} || {{ end -}}
+    Host(`{{ $e }}`)
+  {{- end }}
+{{- end }}
+
+{{/*
 Common labels
 */}}
 {{- define "goweb.labels" -}}
@@ -48,5 +58,4 @@ Selector labels
 {{- define "goweb.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "goweb.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
-app.kubernetes.io/instance: helm
 {{- end }}

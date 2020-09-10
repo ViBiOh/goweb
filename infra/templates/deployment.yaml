@@ -3,6 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "goweb.fullname" . }}
+  namespace: {{ .Values.namespace }}
   labels:
     {{- include "goweb.labels" . | nindent 4 }}
 spec:
@@ -11,10 +12,13 @@ spec:
       {{- include "goweb.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-    {{- with .Values.podAnnotations }}
+      {{- with .Values.podAnnotations }}
       annotations:
         {{- toYaml . | nindent 8 }}
-    {{- end }}
+      {{- end }}
+      {{- with .Values.config }}
+        checksum/config: {{ toYaml . | sha256sum }}
+      {{- end }}
       labels:
         {{- include "goweb.selectorLabels" . | nindent 8 }}
     spec:
@@ -34,5 +38,7 @@ spec:
             httpGet:
               path: "{{ .Values.readinessProbePath }}"
               port: http
+          {{- with .Values.resources }}
           resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}

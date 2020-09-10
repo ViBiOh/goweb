@@ -1,8 +1,10 @@
+{{- if .Values.autoscaling.enabled -}}
 ---
 apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
 metadata:
   name: {{ include "goweb.fullname" . }}
+  namespace: {{ .Values.namespace }}
   labels:
     {{- include "goweb.labels" . | nindent 4 }}
 spec:
@@ -13,3 +15,4 @@ spec:
   minReplicas: {{ .Values.autoscaling.minReplicas }}
   maxReplicas: {{ .Values.autoscaling.maxReplicas }}
   targetCPUUtilizationPercentage: {{ .Values.autoscaling.targetCPUUtilizationPercentage }}
+{{- end -}}

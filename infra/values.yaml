@@ -1,4 +1,5 @@
-replicaCount: 1
+---
+namespace: default
 
 image:
   repository: vibioh/goweb
@@ -12,12 +13,7 @@ podAnnotations:
 livenessProbePath: /health
 readinessProbePath: /health
 
-service:
-  type: ClusterIP
-  port: 80
-
-ingress:
-  host: goweb.vibioh.fr
+config: {}
 
 resources:
   limits:
@@ -27,7 +23,21 @@ resources:
     cpu: 100m
     memory: 64M
 
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: true
+  hosts:
+    - goweb.vibioh.fr
+
+pod_disruption:
+  enabled: true
+  minAvailable: 1
+
 autoscaling:
+  enabled: true
   minReplicas: 1
   maxReplicas: 3
   targetCPUUtilizationPercentage: 80

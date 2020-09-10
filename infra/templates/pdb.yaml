@@ -1,12 +1,15 @@
+{{- if .Values.pod_disruption.enabled -}}
 ---
 apiVersion: policy/v1beta1
 kind: PodDisruptionBudget
 metadata:
   name: {{ include "goweb.fullname" . }}
+  namespace: {{ .Values.namespace }}
   labels:
     {{- include "goweb.labels" . | nindent 4 }}
 spec:
-  minAvailable: {{ .Values.autoscaling.minReplicas }}
+  minAvailable: {{ .Values.pod_disruption.minAvailable }}
   selector:
     matchLabels:
       {{- include "goweb.selectorLabels" . | nindent 6 }}
+{{- end -}}
