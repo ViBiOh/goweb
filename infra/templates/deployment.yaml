@@ -2,14 +2,14 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "goweb.fullname" . }}
+  name: {{ include "app.fullname" . }}
   namespace: {{ .Values.namespace }}
   labels:
-    {{- include "goweb.labels" . | nindent 4 }}
+    {{- include "app.labels" . | nindent 4 }}
 spec:
   selector:
     matchLabels:
-      {{- include "goweb.selectorLabels" . | nindent 6 }}
+      {{- include "app.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -20,12 +20,17 @@ spec:
         checksum/config: {{ toYaml . | sha256sum }}
       {{- end }}
       labels:
-        {{- include "goweb.selectorLabels" . | nindent 8 }}
+        {{- include "app.selectorLabels" . | nindent 8 }}
     spec:
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          {{- if .Values.config }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "app.fullname" . }}
+          {{- end }}
           ports:
             - name: http
               containerPort: 1080

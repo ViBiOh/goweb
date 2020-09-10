@@ -3,10 +3,10 @@
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
-  name: {{ include "goweb.fullname" . }}-http
+  name: {{ include "app.fullname" . }}-http
   namespace: {{ .Values.namespace }}
   labels:
-    {{- include "goweb.labels" . | nindent 4 }}
+    {{- include "app.labels" . | nindent 4 }}
 spec:
   entryPoints:
     - http
@@ -16,7 +16,7 @@ spec:
       middlewares:
         - name: redirect
       services:
-        - name: {{ include "goweb.fullname" . }}
+        - name: {{ include "app.fullname" . }}
           namespace: {{ .Values.namespace }}
           port: {{ .Values.service.port }}
 
@@ -24,10 +24,10 @@ spec:
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
-  name: {{ include "goweb.fullname" . }}-https
+  name: {{ include "app.fullname" . }}-https
   namespace: {{ .Values.namespace }}
   labels:
-    {{- include "goweb.labels" . | nindent 4 }}
+    {{- include "app.labels" . | nindent 4 }}
 spec:
   entryPoints:
     - https
@@ -38,7 +38,7 @@ spec:
         - name: compress
         - name: ratelimit
       services:
-        - name: {{ include "goweb.fullname" . }}
+        - name: {{ include "app.fullname" . }}
           namespace: {{ .Values.namespace }}
           port: {{ .Values.service.port }}
   tls:
