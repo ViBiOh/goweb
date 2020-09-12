@@ -1,4 +1,4 @@
-{{- if .Values.Config }}
+{{- if .Values.config }}
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -8,5 +8,5 @@ metadata:
   labels:
     {{- include "app.labels" . | nindent 4 }}
 data:
-  {{- toYaml .Values.Config | nindent 2 }}
+  {{- toYaml .Values.config | nindent 2 }}
 {{ end }}
