@@ -1,5 +1,4 @@
 ---
-
 # namespace is the namespace of every object created
 namespace: default
 
@@ -22,6 +21,9 @@ readinessProbePath: /health
 
 # config is the map of env var passed to the pod
 config: {}
+
+# secretRef is the name of secret passed to deployment
+secretRef: ""
 
 # resources are the requests and limits for defining the QoS
 resources:

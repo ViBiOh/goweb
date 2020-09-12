@@ -26,10 +26,14 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          {{- if .Values.config }}
+          {{- if or .Values.config .Values.secretRef }}
           envFrom:
             - configMapRef:
                 name: {{ include "app.fullname" . }}
+          {{- end }}
+          {{- if .Values.secretRef }}
+            - secretRef:
+                name: {{ .Values.secretRef }}
           {{- end }}
           ports:
             - name: http
