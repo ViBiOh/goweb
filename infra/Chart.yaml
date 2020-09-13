@@ -1,8 +1,0 @@
----
-apiVersion: v2
-name: goweb
-description: A go application for web development
-
-type: application
-version: 0.1.0
-appVersion: latest

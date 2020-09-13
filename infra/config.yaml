@@ -1,0 +1,10 @@
+---
+nameOverride: goweb
+
+image:
+  repository: vibioh/goweb
+
+ingress:
+  enabled: true
+  hosts:
+    - goweb.vibioh.fr
