@@ -4,6 +4,9 @@ nameOverride: goweb
 image:
   repository: vibioh/goweb
 
+config:
+  API_LOGGER_JSON: "true"
+
 ingress:
   enabled: true
   hosts:
