@@ -48,7 +48,7 @@ Usage of api:
   -frameOptions string
         [owasp] X-Frame-Options {API_FRAME_OPTIONS} (default "deny")
   -graceDuration string
-        [http] Grace duration when SIGTERM received {API_GRACE_DURATION} (default "15s")
+        [http] Grace duration when SIGTERM received {API_GRACE_DURATION} (default "30s")
   -hsts
         [owasp] Indicate Strict Transport Security {API_HSTS} (default true)
   -key string
@@ -71,10 +71,6 @@ Usage of api:
         [http] Listen port {API_PORT} (default 1080)
   -prometheusPath string
         [prometheus] Path for exposing metrics {API_PROMETHEUS_PATH} (default "/metrics")
-  -swaggerTitle string
-        [swagger] API Title {API_SWAGGER_TITLE} (default "API")
-  -swaggerVersion string
-        [swagger] API Version {API_SWAGGER_VERSION} (default "1.0.0")
   -url string
         [alcotest] URL to check {API_URL}
   -userAgent string
