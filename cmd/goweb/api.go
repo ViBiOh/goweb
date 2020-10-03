@@ -14,7 +14,6 @@ import (
 	"github.com/ViBiOh/httputils/v3/pkg/logger"
 	"github.com/ViBiOh/httputils/v3/pkg/owasp"
 	"github.com/ViBiOh/httputils/v3/pkg/prometheus"
-	"github.com/ViBiOh/httputils/v3/pkg/swagger"
 )
 
 const (
@@ -31,7 +30,6 @@ func main() {
 	prometheusConfig := prometheus.Flags(fs, "prometheus")
 	owaspConfig := owasp.Flags(fs, "")
 	corsConfig := cors.Flags(fs, "cors")
-	swaggerConfig := swagger.Flags(fs, "swagger")
 
 	helloConfig := hello.Flags(fs, "")
 
@@ -39,18 +37,15 @@ func main() {
 
 	alcotest.DoAndExit(alcotestConfig)
 	logger.Global(logger.New(loggerConfig))
+	defer logger.Close()
 
 	server := httputils.New(serverConfig)
 	server.Middleware(prometheus.New(prometheusConfig).Middleware)
 	server.Middleware(owasp.New(owaspConfig).Middleware)
 	server.Middleware(cors.New(corsConfig).Middleware)
 
-	swaggerApp, err := swagger.New(swaggerConfig, server.Swagger, hello.Swagger)
-	logger.Fatal(err)
-
 	helloHandler := http.StripPrefix(helloPath, hello.Handler(helloConfig))
 	dumpHandler := http.StripPrefix(dumpPath, dump.Handler())
-	swaggerHandler := swaggerApp.Handler()
 
 	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if strings.HasPrefix(r.URL.Path, helloPath) {
@@ -62,7 +57,7 @@ func main() {
 			return
 		}
 
-		swaggerHandler.ServeHTTP(w, r)
+		w.WriteHeader(http.StatusNotFound)
 	})
 
 	server.ListenServeWait(handler)
