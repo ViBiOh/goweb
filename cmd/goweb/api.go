@@ -12,6 +12,7 @@ import (
 	"github.com/ViBiOh/httputils/v3/pkg/cors"
 	"github.com/ViBiOh/httputils/v3/pkg/httputils"
 	"github.com/ViBiOh/httputils/v3/pkg/logger"
+	"github.com/ViBiOh/httputils/v3/pkg/model"
 	"github.com/ViBiOh/httputils/v3/pkg/owasp"
 	"github.com/ViBiOh/httputils/v3/pkg/prometheus"
 )
@@ -39,11 +40,6 @@ func main() {
 	logger.Global(logger.New(loggerConfig))
 	defer logger.Close()
 
-	server := httputils.New(serverConfig)
-	server.Middleware(prometheus.New(prometheusConfig).Middleware)
-	server.Middleware(owasp.New(owaspConfig).Middleware)
-	server.Middleware(cors.New(corsConfig).Middleware)
-
 	helloHandler := http.StripPrefix(helloPath, hello.Handler(helloConfig))
 	dumpHandler := http.StripPrefix(dumpPath, dump.Handler())
 
@@ -60,5 +56,9 @@ func main() {
 		w.WriteHeader(http.StatusNotFound)
 	})
 
-	server.ListenServeWait(handler)
+	httputils.New(serverConfig).ListenAndServe(handler, []model.Middleware{
+		prometheus.New(prometheusConfig).Middleware,
+		owasp.New(owaspConfig).Middleware,
+		cors.New(corsConfig).Middleware,
+	})
 }
