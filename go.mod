@@ -4,5 +4,6 @@ go 1.15
 
 require (
 	github.com/ViBiOh/httputils/v3 v3.32.0
-	golang.org/x/sys v0.0.0-20200930185726-fdedc70b468f // indirect
+	github.com/newrelic/go-agent/v3 v3.9.0
+	golang.org/x/net v0.0.0-20201021035429-f5854403a974 // indirect
 )
