@@ -14,7 +14,6 @@ import (
 	"github.com/ViBiOh/httputils/v3/pkg/logger"
 	"github.com/ViBiOh/httputils/v3/pkg/owasp"
 	"github.com/ViBiOh/httputils/v3/pkg/prometheus"
-	"github.com/newrelic/go-agent/v3/newrelic"
 )
 
 const (
@@ -40,11 +39,6 @@ func main() {
 	logger.Global(logger.New(loggerConfig))
 	defer logger.Close()
 
-	newrelicApp, err := newrelic.NewApplication(newrelic.ConfigFromEnvironment())
-	if err != nil {
-		logger.Warn("unable to create newrelic app: %s", err)
-	}
-
 	helloHandler := http.StripPrefix(helloPath, hello.Handler(helloConfig))
 	dumpHandler := http.StripPrefix(dumpPath, dump.Handler())
 
@@ -61,12 +55,5 @@ func main() {
 		w.WriteHeader(http.StatusNotFound)
 	})
 
-	httputils.New(serverConfig).ListenAndServe(handler, nil, prometheus.New(prometheusConfig).Middleware, newRelicHMiddleware(newrelicApp), owasp.New(owaspConfig).Middleware, cors.New(corsConfig).Middleware)
-}
-
-func newRelicHMiddleware(app *newrelic.Application) func(http.Handler) http.Handler {
-	return func(next http.Handler) http.Handler {
-		_, handler := newrelic.WrapHandle(app, "/", next)
-		return handler
-	}
+	httputils.New(serverConfig).ListenAndServe(handler, nil, prometheus.New(prometheusConfig).Middleware, owasp.New(owaspConfig).Middleware, cors.New(corsConfig).Middleware)
 }
