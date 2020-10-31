@@ -1,9 +1,11 @@
 FROM vibioh/scratch
 
-ENV ZONEINFO zoneinfo.zip
+ENV API_PORT 1080
 EXPOSE 1080
 
-ENV API_PORT 1080
+ENV ZONEINFO /zoneinfo.zip
+COPY zoneinfo.zip /zoneinfo.zip
+COPY ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
 
 HEALTHCHECK --retries=5 CMD [ "/goweb", "-url", "http://localhost:1080/health" ]
 ENTRYPOINT [ "/goweb" ]
@@ -14,6 +16,4 @@ ENV VERSION=${VERSION}
 ARG TARGETOS
 ARG TARGETARCH
 
-COPY cacert.pem /etc/ssl/certs/ca-certificates.crt
-COPY zoneinfo.zip /
 COPY release/goweb_${TARGETOS}_${TARGETARCH} /goweb
