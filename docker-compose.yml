@@ -1,6 +1,4 @@
----
 version: "2"
-
 services:
   api:
     image: ${DOCKER_USER}/goweb
@@ -19,4 +17,4 @@ services:
     cpu_shares: 128
     mem_limit: 25165824
     security_opt:
-      - no-new-privileges
+    - no-new-privileges

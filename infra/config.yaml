@@ -1,4 +1,3 @@
----
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
@@ -15,14 +14,13 @@ spec:
         name: vibioh
         namespace: flux-system
       interval: 120m
-
   values:
     nameOverride: goweb
     image:
-      repository: vibioh/goweb # {"$imagepolicy": "default:goweb"}
+      repository: vibioh/goweb:1.0.0 # {"$imagepolicy": "default:goweb"}
     config:
       API_LOGGER_JSON: "true"
     ingress:
       enabled: true
       hosts:
-        - goweb.vibioh.fr
+      - goweb.vibioh.fr
