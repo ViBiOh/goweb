@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: app
-      version: "0.0.30"
+      version: "0.0.31"
       sourceRef:
         kind: HelmRepository
         name: vibioh
@@ -17,7 +17,8 @@ spec:
   values:
     nameOverride: goweb
     image:
-      repository: vibioh/goweb:1.0.0 # {"$imagepolicy": "default:goweb"}
+      repository: vibioh/goweb
+      tag: 1.0.0 # {"$imagepolicy": "default:goweb"}
     config:
       API_LOGGER_JSON: "true"
     ingress:
