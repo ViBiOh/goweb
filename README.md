@@ -7,13 +7,13 @@
 
 ## Getting started
 
-Golang binary is built with static link. You can download it directly from the Github Release page or build it by yourself by cloning this repo and running make.
+Golang binary is built with static link. You can download it directly from the [Github Release page](https://github.com/ViBiOh/goweb/releases) or build it by yourself by cloning this repo and running `make`.
 
-A Docker image is available for amd64, arm and arm64 platforms on Docker Hub: vibioh/goweb.
+A Docker image is available for `amd64`, `arm` and `arm64` platforms on Docker Hub: [vibioh/goweb](https://hub.docker.com/r/vibioh/goweb/tags).
 
-You can configure app by passing CLI args or environment variables (cf. Usage section). CLI override environment variables.
+You can configure app by passing CLI args or environment variables (cf. [Usage](#usage) section). CLI override environment variables.
 
-You'll find a Helm Kubernetes exemple (without secrets) in the infra/ folder.
+You'll find a Kubernetes exemple in the [`infra/`](infra/) folder, using my [`app chart`](https://github.com/ViBiOh/charts/tree/master/app)
 
 ## CI
 
