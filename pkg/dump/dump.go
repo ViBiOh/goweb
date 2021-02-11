@@ -24,24 +24,27 @@ func Handler() http.Handler {
 	})
 }
 
-func dumpRequest(r *http.Request) string {
-	var headers bytes.Buffer
-	for key, value := range r.Header {
-		headers.WriteString(fmt.Sprintf("%s: %s\n", key, strings.Join(value, ",")))
+func getBufferContent(content map[string][]string) bytes.Buffer {
+	var buffer bytes.Buffer
+
+	for key, values := range content {
+		buffer.WriteString(fmt.Sprintf("%s: %s\n", key, strings.Join(values, ",")))
 	}
 
-	var params bytes.Buffer
-	for key, value := range r.URL.Query() {
-		headers.WriteString(fmt.Sprintf("%s: %s\n", key, strings.Join(value, ",")))
+	return buffer
+}
+
+func dumpRequest(r *http.Request) string {
+	parts := map[string]bytes.Buffer{
+		"Headers": getBufferContent(r.Header),
+		"Params":  getBufferContent(r.URL.Query()),
 	}
 
 	var form bytes.Buffer
 	if err := r.ParseForm(); err != nil {
 		form.WriteString(err.Error())
 	} else {
-		for key, value := range r.PostForm {
-			form.WriteString(fmt.Sprintf("%s: %s\n", key, strings.Join(value, ",")))
-		}
+		parts["Form"] = getBufferContent(r.PostForm)
 	}
 
 	body, err := request.ReadBodyRequest(r)
@@ -56,19 +59,14 @@ func dumpRequest(r *http.Request) string {
 		r.URL.Path,
 	}
 
-	if headers.Len() != 0 {
-		outputPattern.WriteString("Headers\n%s\n")
-		outputData = append(outputData, headers.String())
-	}
+	for key, value := range parts {
+		if value.Len() == 0 {
+			continue
+		}
 
-	if params.Len() != 0 {
-		outputPattern.WriteString("Params\n%s\n")
-		outputData = append(outputData, params.String())
-	}
-
-	if form.Len() != 0 {
-		outputPattern.WriteString("Form\n%s\n")
-		outputData = append(outputData, form.String())
+		outputPattern.WriteString(key)
+		outputPattern.WriteString("\n%s\n")
+		outputData = append(outputData, value.String())
 	}
 
 	if len(body) != 0 {
