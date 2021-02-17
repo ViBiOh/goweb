@@ -17,7 +17,7 @@ spec:
   values:
     nameOverride: goweb
     image:
-      repository: vibioh/goweb:202102171917 # {"$imagepolicy": "default:goweb"}
+      repository: vibioh/goweb:202102172238 # {"$imagepolicy": "default:goweb"}
     config:
       API_LOGGER_JSON: "true"
     ingress:
