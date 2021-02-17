@@ -6,6 +6,7 @@ import (
 	"os"
 	"strings"
 
+	"github.com/ViBiOh/goweb/pkg/delay"
 	"github.com/ViBiOh/goweb/pkg/dump"
 	"github.com/ViBiOh/goweb/pkg/hello"
 	"github.com/ViBiOh/httputils/v3/pkg/alcotest"
@@ -19,6 +20,7 @@ import (
 const (
 	helloPath = "/hello"
 	dumpPath  = "/dump"
+	delayPath = "/delay"
 )
 
 func main() {
@@ -41,6 +43,7 @@ func main() {
 
 	helloHandler := http.StripPrefix(helloPath, hello.Handler(helloConfig))
 	dumpHandler := http.StripPrefix(dumpPath, dump.Handler())
+	delayHandler := http.StripPrefix(delayPath, delay.Handler())
 
 	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if strings.HasPrefix(r.URL.Path, helloPath) {
@@ -49,6 +52,10 @@ func main() {
 		}
 		if strings.HasPrefix(r.URL.Path, dumpPath) {
 			dumpHandler.ServeHTTP(w, r)
+			return
+		}
+		if strings.HasPrefix(r.URL.Path, delayPath) {
+			delayHandler.ServeHTTP(w, r)
 			return
 		}
 
