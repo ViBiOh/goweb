@@ -70,7 +70,10 @@ func main() {
 			return
 		}
 
-		w.WriteHeader(http.StatusNotFound)
+		w.WriteHeader(http.StatusTeapot)
+		if _, err := w.Write([]byte("🫖")); err != nil {
+			logger.Error("unable to write teapot: %s", err)
+		}
 	})
 
 	go promServer.Start("prometheus", healthApp.End(), prometheusApp.Handler())
