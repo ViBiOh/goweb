@@ -24,7 +24,7 @@ spec:
   values:
     nameOverride: goweb
     image:
-      repository: vibioh/goweb:202102280743 # {"$imagepolicy": "default:flux-goweb-api"}
+      repository: vibioh/goweb:202103011543 # {"$imagepolicy": "default:flux-goweb-api"}
     config:
       API_LOGGER_JSON: "true"
     ingress:
