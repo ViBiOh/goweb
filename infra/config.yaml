@@ -32,4 +32,4 @@ spec:
     ingress:
       enabled: true
       hosts:
-        - api.vibioh.fr
+      - api.vibioh.fr
