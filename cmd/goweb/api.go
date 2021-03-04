@@ -26,6 +26,28 @@ const (
 	delayPath = "/delay"
 )
 
+var content = `
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <title>I'm a teapot 🫖</title>
+    <meta name="description" content="I'm a teapot 🫖">
+    <meta property="og:title" content="I'm a teapot 🫖" />
+    <meta property="og:description" content="I'm a teapot 🫖" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://api.vibioh.fr" />
+  </head>
+
+  <body>
+    <h1>I'm a teapot 🫖</h1>
+  </body>
+</html>
+`
+
 func main() {
 	fs := flag.NewFlagSet("api", flag.ExitOnError)
 
@@ -71,7 +93,7 @@ func main() {
 		}
 
 		w.WriteHeader(http.StatusTeapot)
-		if _, err := w.Write([]byte("🫖")); err != nil {
+		if _, err := w.Write([]byte(content)); err != nil {
 			logger.Error("unable to write teapot: %s", err)
 		}
 	})
