@@ -1,6 +1,7 @@
 package main
 
 import (
+	"embed"
 	"flag"
 	"net/http"
 	"os"
@@ -17,6 +18,7 @@ import (
 	"github.com/ViBiOh/httputils/v4/pkg/logger"
 	"github.com/ViBiOh/httputils/v4/pkg/owasp"
 	"github.com/ViBiOh/httputils/v4/pkg/prometheus"
+	"github.com/ViBiOh/httputils/v4/pkg/renderer"
 	"github.com/ViBiOh/httputils/v4/pkg/server"
 )
 
@@ -26,27 +28,8 @@ const (
 	delayPath = "/delay"
 )
 
-var content = `
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="format-detection" content="telephone=no">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-
-    <title>I'm a teapot 🫖</title>
-    <meta name="description" content="I'm a teapot 🫖">
-    <meta property="og:title" content="I'm a teapot 🫖" />
-    <meta property="og:description" content="I'm a teapot 🫖" />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://api.vibioh.fr" />
-  </head>
-
-  <body>
-    <h1>I'm a teapot 🫖</h1>
-  </body>
-</html>
-`
+//go:embed templates static
+var content embed.FS
 
 func main() {
 	fs := flag.NewFlagSet("api", flag.ExitOnError)
@@ -60,6 +43,7 @@ func main() {
 	prometheusConfig := prometheus.Flags(fs, "prometheus")
 	owaspConfig := owasp.Flags(fs, "")
 	corsConfig := cors.Flags(fs, "cors")
+	rendererConfig := renderer.Flags(fs, "", flags.NewOverride("PublicURL", "https://api.vibioh.fr"), flags.NewOverride("Title", "I'm a teapot 🫖"))
 
 	helloConfig := hello.Flags(fs, "")
 
@@ -74,9 +58,15 @@ func main() {
 	prometheusApp := prometheus.New(prometheusConfig)
 	healthApp := health.New(healthConfig)
 
+	rendererApp, err := renderer.New(rendererConfig, content, nil)
+	logger.Fatal(err)
+
 	helloHandler := http.StripPrefix(helloPath, hello.Handler(helloConfig))
 	dumpHandler := http.StripPrefix(dumpPath, dump.Handler())
 	delayHandler := http.StripPrefix(delayPath, delay.Handler())
+	rendererHandler := rendererApp.Handler(func(r *http.Request) (string, int, map[string]interface{}, error) {
+		return "public", http.StatusTeapot, nil, nil
+	})
 
 	appHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if strings.HasPrefix(r.URL.Path, helloPath) {
@@ -92,10 +82,7 @@ func main() {
 			return
 		}
 
-		w.WriteHeader(http.StatusTeapot)
-		if _, err := w.Write([]byte(content)); err != nil {
-			logger.Error("unable to write teapot: %s", err)
-		}
+		rendererHandler.ServeHTTP(w, r)
 	})
 
 	go promServer.Start("prometheus", healthApp.End(), prometheusApp.Handler())

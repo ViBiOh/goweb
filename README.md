@@ -89,10 +89,14 @@ Usage of api:
         [prometheus] Shutdown Timeout {API_PROMETHEUS_SHUTDOWN_TIMEOUT} (default "5s")
   -prometheusWriteTimeout string
         [prometheus] Write Timeout {API_PROMETHEUS_WRITE_TIMEOUT} (default "10s")
+  -publicURL string
+        Public URL {API_PUBLIC_URL} (default "https://api.vibioh.fr")
   -readTimeout string
         [server] Read Timeout {API_READ_TIMEOUT} (default "5s")
   -shutdownTimeout string
         [server] Shutdown Timeout {API_SHUTDOWN_TIMEOUT} (default "10s")
+  -title string
+        Application title {API_TITLE} (default "I'm a teapot 🫖")
   -url string
         [alcotest] URL to check {API_URL}
   -userAgent string
