@@ -5,6 +5,7 @@ import (
 	"flag"
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
 
 	"github.com/ViBiOh/goweb/pkg/delay"
@@ -65,7 +66,17 @@ func main() {
 	dumpHandler := http.StripPrefix(dumpPath, dump.Handler())
 	delayHandler := http.StripPrefix(delayPath, delay.Handler())
 	rendererHandler := rendererApp.Handler(func(r *http.Request) (string, int, map[string]interface{}, error) {
-		return "public", http.StatusTeapot, nil, nil
+		status := http.StatusTeapot
+
+		if userStatus := r.URL.Query().Get("status"); len(userStatus) != 0 {
+			if rawStatus, err := strconv.Atoi(userStatus); err != nil {
+				logger.Error("unable to parse wanted status: %s", err)
+			} else {
+				status = rawStatus
+			}
+		}
+
+		return "public", status, nil, nil
 	})
 
 	appHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
