@@ -32,6 +32,20 @@ const (
 //go:embed templates static
 var content embed.FS
 
+func askedStatus(r *http.Request) int {
+	status := http.StatusTeapot
+
+	if userStatus := r.URL.Query().Get("status"); len(userStatus) != 0 {
+		if rawStatus, err := strconv.Atoi(userStatus); err != nil {
+			logger.Error("unable to parse wanted status: %s", err)
+		} else if rawStatus < http.StatusInternalServerError {
+			status = rawStatus
+		}
+	}
+
+	return status
+}
+
 func main() {
 	fs := flag.NewFlagSet("api", flag.ExitOnError)
 
@@ -66,17 +80,7 @@ func main() {
 	dumpHandler := http.StripPrefix(dumpPath, dump.Handler())
 	delayHandler := http.StripPrefix(delayPath, delay.Handler())
 	rendererHandler := rendererApp.Handler(func(r *http.Request) (string, int, map[string]interface{}, error) {
-		status := http.StatusTeapot
-
-		if userStatus := r.URL.Query().Get("status"); len(userStatus) != 0 {
-			if rawStatus, err := strconv.Atoi(userStatus); err != nil {
-				logger.Error("unable to parse wanted status: %s", err)
-			} else {
-				status = rawStatus
-			}
-		}
-
-		return "public", status, nil, nil
+		return "public", askedStatus(r), nil, nil
 	})
 
 	appHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -93,7 +97,11 @@ func main() {
 			return
 		}
 
-		rendererHandler.ServeHTTP(w, r)
+		if strings.Contains(r.Header.Get("Accept"), "text/html") {
+			rendererHandler.ServeHTTP(w, r)
+		} else {
+			w.WriteHeader(askedStatus(r))
+		}
 	})
 
 	go promServer.Start("prometheus", healthApp.End(), prometheusApp.Handler())
