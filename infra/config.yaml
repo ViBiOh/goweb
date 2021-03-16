@@ -34,4 +34,4 @@ spec:
       - api.vibioh.fr
     canary:
       enabled: true
-      url: http://goweb/hello/
+      url: http://api.vibioh.fr/dump/
