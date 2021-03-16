@@ -34,4 +34,4 @@ spec:
       - api.vibioh.fr
     canary:
       enabled: true
-      url: https://api.vibioh.fr/hello/
+      url: https://api.vibioh.fr/dump/
