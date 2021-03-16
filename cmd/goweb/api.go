@@ -1,11 +1,9 @@
 package main
 
 import (
-	"embed"
 	"flag"
 	"net/http"
 	"os"
-	"strconv"
 	"strings"
 
 	"github.com/ViBiOh/goweb/pkg/delay"
@@ -19,7 +17,6 @@ import (
 	"github.com/ViBiOh/httputils/v4/pkg/logger"
 	"github.com/ViBiOh/httputils/v4/pkg/owasp"
 	"github.com/ViBiOh/httputils/v4/pkg/prometheus"
-	"github.com/ViBiOh/httputils/v4/pkg/renderer"
 	"github.com/ViBiOh/httputils/v4/pkg/server"
 )
 
@@ -28,23 +25,6 @@ const (
 	dumpPath  = "/dump"
 	delayPath = "/delay"
 )
-
-//go:embed templates static
-var content embed.FS
-
-func askedStatus(r *http.Request) int {
-	status := http.StatusTeapot
-
-	if userStatus := r.URL.Query().Get("status"); len(userStatus) != 0 {
-		if rawStatus, err := strconv.Atoi(userStatus); err != nil {
-			logger.Error("unable to parse wanted status: %s", err)
-		} else if rawStatus < http.StatusInternalServerError {
-			status = rawStatus
-		}
-	}
-
-	return status
-}
 
 func main() {
 	fs := flag.NewFlagSet("api", flag.ExitOnError)
@@ -58,7 +38,6 @@ func main() {
 	prometheusConfig := prometheus.Flags(fs, "prometheus")
 	owaspConfig := owasp.Flags(fs, "")
 	corsConfig := cors.Flags(fs, "cors")
-	rendererConfig := renderer.Flags(fs, "", flags.NewOverride("PublicURL", "https://api.vibioh.fr"), flags.NewOverride("Title", "I'm a teapot 🫖"))
 
 	helloConfig := hello.Flags(fs, "")
 
@@ -73,15 +52,9 @@ func main() {
 	prometheusApp := prometheus.New(prometheusConfig)
 	healthApp := health.New(healthConfig)
 
-	rendererApp, err := renderer.New(rendererConfig, content, nil)
-	logger.Fatal(err)
-
 	helloHandler := http.StripPrefix(helloPath, hello.Handler(helloConfig))
 	dumpHandler := http.StripPrefix(dumpPath, dump.Handler())
 	delayHandler := http.StripPrefix(delayPath, delay.Handler())
-	rendererHandler := rendererApp.Handler(func(r *http.Request) (string, int, map[string]interface{}, error) {
-		return "public", askedStatus(r), nil, nil
-	})
 
 	appHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if strings.HasPrefix(r.URL.Path, helloPath) {
@@ -97,11 +70,7 @@ func main() {
 			return
 		}
 
-		if strings.Contains(r.Header.Get("Accept"), "text/html") {
-			rendererHandler.ServeHTTP(w, r)
-		} else {
-			w.WriteHeader(askedStatus(r))
-		}
+		w.WriteHeader(http.StatusTeapot)
 	})
 
 	go promServer.Start("prometheus", healthApp.End(), prometheusApp.Handler())
