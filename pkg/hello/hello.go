@@ -48,6 +48,6 @@ func Handler(config Config) http.Handler {
 			name = "World"
 		}
 
-		httpjson.ResponseJSON(w, http.StatusOK, Hello{fmt.Sprintf("Hello %s, current time in %s is %v !", name, location.String(), time.Now().In(location))}, httpjson.IsPretty(r))
+		httpjson.Write(w, http.StatusOK, Hello{fmt.Sprintf("Hello %s, current time in %s is %v !", name, location.String(), time.Now().In(location))}, httpjson.IsPretty(r))
 	})
 }
