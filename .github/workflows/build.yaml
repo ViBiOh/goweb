@@ -47,13 +47,13 @@ jobs:
           curl --disable --silent --show-error --location --max-time 30 "https://raw.githubusercontent.com/ViBiOh/scripts/main/bootstrap" | bash -s "release"
           ./scripts/release build
       - name: Login to DockerHub
-        if: ${{ secrets.DOCKER_USER }} != '' && ${{ secrets.DOCKER_PASS }} != ''
+        if: secrets.DOCKER_USER && secrets.DOCKER_PASS
         uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKER_USER }}
           password: ${{ secrets.DOCKER_PASS }}
       - name: Docker
-        if: ${{ secrets.DOCKER_USER }} != '' && ${{ secrets.DOCKER_PASS }} != ''
+        if: secrets.DOCKER_USER && secrets.DOCKER_PASS
         run: |
           DOCKER_IMAGE="${{ secrets.DOCKER_USER }}/$(make name)" IMAGE_VERSION="$(make version)" ./scripts/release docker
 
