@@ -8,11 +8,6 @@ on:
   pull_request:
     branches:
       - main
-  workflow_run:
-    workflows:
-      - Dependabot Pull Request
-    types:
-      - completed
 
 env:
   SCRIPTS_NO_INTERACTIVE: "true"
