@@ -1,4 +1,6 @@
+---
 name: Build
+
 on:
   push:
     branches:
@@ -6,11 +8,19 @@ on:
   pull_request:
     branches:
       - main
+  workflow_run:
+    workflows:
+      - Dependabot Pull Request
+    types:
+      - completed
+
 env:
   SCRIPTS_NO_INTERACTIVE: "true"
+
 defaults:
   run:
     shell: bash
+
 jobs:
   build:
     name: Golang
@@ -25,6 +35,7 @@ jobs:
           make
           git --no-pager diff -- ':(exclude)go.sum' && git diff --quiet -- ':(exclude)go.sum'
       - uses: codecov/codecov-action@v1
+
   package:
     name: Docker
     if: "! contains(toJSON(github.event.commits.*.message), '[skip ci]')"
@@ -45,6 +56,7 @@ jobs:
         run: |
           curl --disable --silent --show-error --location --max-time 30 "https://raw.githubusercontent.com/ViBiOh/scripts/main/bootstrap" | bash -s "release"
           DOCKER_IMAGE="${{ secrets.DOCKER_USER }}/$(make name)" IMAGE_VERSION="$(make version)" ./scripts/release build docker
+
   publish:
     name: Publish
     if: github.event_name == 'push' && github.ref == 'refs/heads/main' && !contains(toJSON(github.event.commits.*.message), '[skip ci]')
