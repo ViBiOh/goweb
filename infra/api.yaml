@@ -25,13 +25,13 @@ spec:
     nameOverride: goweb
     image:
       name: vibioh/goweb
-      tag: "202104111751" # {"$imagepolicy": "default:flux-goweb-api:tag"}
+      tag: "202104121157" # {"$imagepolicy": "default:flux-goweb-api:tag"}
     config:
       API_LOGGER_JSON: "true"
     ingress:
       enabled: true
       hosts:
-        - api.vibioh.fr
+      - api.vibioh.fr
     canary:
       enabled: true
       url: http://api.vibioh.fr/hello/
