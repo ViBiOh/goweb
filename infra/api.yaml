@@ -25,7 +25,7 @@ spec:
     nameOverride: goweb
     image:
       name: vibioh/goweb
-      tag: "202105221647" # {"$imagepolicy": "default:flux-goweb-api:tag"}
+      tag: "202105290803" # {"$imagepolicy": "default:flux-goweb-api:tag"}
     config:
       API_LOGGER_JSON: "true"
     ingress:
