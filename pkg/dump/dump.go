@@ -3,18 +3,22 @@ package dump
 import (
 	"bytes"
 	"fmt"
+	"io"
 	"net/http"
 	"strings"
 
 	"github.com/ViBiOh/httputils/v4/pkg/httperror"
 	"github.com/ViBiOh/httputils/v4/pkg/logger"
-	"github.com/ViBiOh/httputils/v4/pkg/request"
 )
 
 // Handler for dump request. Should be use with net/http
 func Handler() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		value := dumpRequest(r)
+		value, err := dumpRequest(r)
+		if err != nil {
+			httperror.BadRequest(w, err)
+			return
+		}
 
 		logger.Info("Dump of request\n%s", value)
 
@@ -23,33 +27,21 @@ func Handler() http.Handler {
 		}
 	})
 }
-
-func getBufferContent(content map[string][]string) bytes.Buffer {
-	var buffer bytes.Buffer
-
-	for key, values := range content {
-		buffer.WriteString(fmt.Sprintf("%s: %s\n", key, strings.Join(values, ",")))
-	}
-
-	return buffer
-}
-
-func dumpRequest(r *http.Request) string {
+func dumpRequest(r *http.Request) (string, error) {
 	parts := map[string]bytes.Buffer{
 		"Headers": getBufferContent(r.Header),
 		"Params":  getBufferContent(r.URL.Query()),
 	}
 
-	var form bytes.Buffer
 	if err := r.ParseForm(); err != nil {
-		form.WriteString(err.Error())
-	} else {
-		parts["Form"] = getBufferContent(r.PostForm)
+		return "", fmt.Errorf("unable to parse form: %s", err)
 	}
 
-	body, err := request.ReadBodyRequest(r)
+	parts["Form"] = getBufferContent(r.PostForm)
+
+	body, err := readContent(r.Body)
 	if err != nil {
-		logger.Error("%s", err)
+		return "", fmt.Errorf("unable to read content: %s", err)
 	}
 
 	var outputPattern bytes.Buffer
@@ -64,15 +56,45 @@ func dumpRequest(r *http.Request) string {
 			continue
 		}
 
+		outputPattern.WriteString("\n")
 		outputPattern.WriteString(key)
-		outputPattern.WriteString("\n%s\n")
+		outputPattern.WriteString("\n%s")
 		outputData = append(outputData, value.String())
 	}
 
 	if len(body) != 0 {
-		outputPattern.WriteString("Body\n%s\n")
+		outputPattern.WriteString("\nBody\n%s")
 		outputData = append(outputData, body)
 	}
 
-	return fmt.Sprintf(outputPattern.String(), outputData...)
+	return fmt.Sprintf(outputPattern.String(), outputData...), nil
+}
+
+func getBufferContent(content map[string][]string) bytes.Buffer {
+	var buffer bytes.Buffer
+
+	for key, values := range content {
+		buffer.WriteString(fmt.Sprintf("%s: %s\n", key, strings.Join(values, ",")))
+	}
+
+	return buffer
+}
+
+func readContent(body io.ReadCloser) (content []byte, err error) {
+	if body == nil {
+		return
+	}
+
+	defer func() {
+		if closeErr := body.Close(); closeErr != nil {
+			if err == nil {
+				err = closeErr
+			} else {
+				err = fmt.Errorf("%s: %w", err, closeErr)
+			}
+		}
+	}()
+
+	content, err = io.ReadAll(body)
+	return
 }
