@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"sort"
 	"strings"
 
 	"github.com/ViBiOh/httputils/v4/pkg/httperror"
@@ -28,7 +29,7 @@ func Handler() http.Handler {
 	})
 }
 func dumpRequest(r *http.Request) (string, error) {
-	parts := map[string]bytes.Buffer{
+	parts := map[string]string{
 		"Headers": getBufferContent(r.Header),
 		"Params":  getBufferContent(r.URL.Query()),
 	}
@@ -52,14 +53,14 @@ func dumpRequest(r *http.Request) (string, error) {
 	}
 
 	for key, value := range parts {
-		if value.Len() == 0 {
+		if len(value) == 0 {
 			continue
 		}
 
 		outputPattern.WriteString("\n")
 		outputPattern.WriteString(key)
 		outputPattern.WriteString("\n%s")
-		outputData = append(outputData, value.String())
+		outputData = append(outputData, value)
 	}
 
 	if len(body) != 0 {
@@ -70,14 +71,15 @@ func dumpRequest(r *http.Request) (string, error) {
 	return fmt.Sprintf(outputPattern.String(), outputData...), nil
 }
 
-func getBufferContent(content map[string][]string) bytes.Buffer {
-	var buffer bytes.Buffer
+func getBufferContent(content map[string][]string) string {
+	var output []string
 
 	for key, values := range content {
-		buffer.WriteString(fmt.Sprintf("%s: %s\n", key, strings.Join(values, ",")))
+		output = append(output, fmt.Sprintf("%s: %s", key, strings.Join(values, ",")))
 	}
 
-	return buffer
+	sort.Strings(output)
+	return strings.Join(output, "\n")
 }
 
 func readContent(body io.ReadCloser) (content []byte, err error) {
