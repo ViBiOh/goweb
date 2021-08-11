@@ -28,6 +28,7 @@ func Handler() http.Handler {
 		}
 	})
 }
+
 func dumpRequest(r *http.Request) (string, error) {
 	parts := map[string]string{
 		"Headers": getBufferContent(r.Header),
@@ -46,7 +47,7 @@ func dumpRequest(r *http.Request) (string, error) {
 	}
 
 	var outputPattern bytes.Buffer
-	outputPattern.WriteString("%s %s\n")
+	outputPattern.WriteString("%s %s")
 	outputData := []interface{}{
 		r.Method,
 		r.URL.Path,
@@ -57,7 +58,7 @@ func dumpRequest(r *http.Request) (string, error) {
 			continue
 		}
 
-		outputPattern.WriteString("\n")
+		outputPattern.WriteString("\n\n")
 		outputPattern.WriteString(key)
 		outputPattern.WriteString("\n%s")
 		outputData = append(outputData, value)
