@@ -33,11 +33,19 @@ func dumpRequest(r *http.Request) (string, error) {
 	parts := map[string]string{
 		"Headers": getBufferContent(r.Header),
 		"Params":  getBufferContent(r.URL.Query()),
+		"Referer": r.Referer(),
 	}
 
 	if err := r.ParseForm(); err != nil {
 		return "", fmt.Errorf("unable to parse form: %s", err)
 	}
+
+	cookies := r.Cookies()
+	cookiesString := make([]string, len(cookies))
+	for i, cookie := range cookies {
+		cookiesString[i] = cookie.String()
+	}
+	parts["Cookies"] = strings.Join(cookiesString, ", ")
 
 	parts["Form"] = getBufferContent(r.PostForm)
 
