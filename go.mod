@@ -2,7 +2,7 @@ module github.com/ViBiOh/goweb
 
 go 1.17
 
-require github.com/ViBiOh/httputils/v4 v4.32.0
+require github.com/ViBiOh/httputils/v4 v4.33.0
 
 require (
 	github.com/beorn7/perks v1.0.1 // indirect
