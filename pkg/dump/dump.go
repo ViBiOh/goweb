@@ -55,8 +55,10 @@ func dumpRequest(r *http.Request) (string, error) {
 	}
 
 	var outputPattern bytes.Buffer
-	outputPattern.WriteString("%s %s")
+	outputPattern.WriteString("RemoteAddr=`%s`\nHost=`%s`\n%s %s")
 	outputData := []interface{}{
+		r.RemoteAddr,
+		r.Host,
 		r.Method,
 		r.URL.Path,
 	}
