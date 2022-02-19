@@ -98,6 +98,10 @@ Usage of api:
         [server] Read Timeout {API_READ_TIMEOUT} (default "5s")
   -shutdownTimeout string
         [server] Shutdown Timeout {API_SHUTDOWN_TIMEOUT} (default "10s")
+  -tracerRate string
+        [tracer] Jaeger sample rate, 'always', 'never' or a float value {API_TRACER_RATE} (default "always")
+  -tracerURL string
+        [tracer] Jaeger endpoint URL (e.g. http://jaeger:14268/api/traces) {API_TRACER_URL}
   -url string
         [alcotest] URL to check {API_URL}
   -userAgent string

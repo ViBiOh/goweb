@@ -2,9 +2,12 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"net/http"
 	"os"
 	"strings"
+
+	_ "net/http/pprof"
 
 	"github.com/ViBiOh/flags"
 	"github.com/ViBiOh/goweb/pkg/delay"
@@ -18,7 +21,9 @@ import (
 	"github.com/ViBiOh/httputils/v4/pkg/owasp"
 	"github.com/ViBiOh/httputils/v4/pkg/prometheus"
 	"github.com/ViBiOh/httputils/v4/pkg/recoverer"
+	"github.com/ViBiOh/httputils/v4/pkg/request"
 	"github.com/ViBiOh/httputils/v4/pkg/server"
+	"github.com/ViBiOh/httputils/v4/pkg/tracer"
 )
 
 const (
@@ -36,6 +41,7 @@ func main() {
 
 	alcotestConfig := alcotest.Flags(fs, "")
 	loggerConfig := logger.Flags(fs, "logger")
+	tracerConfig := tracer.Flags(fs, "tracer")
 	prometheusConfig := prometheus.Flags(fs, "prometheus", flags.NewOverride("Gzip", false))
 	owaspConfig := owasp.Flags(fs, "")
 	corsConfig := cors.Flags(fs, "cors")
@@ -47,6 +53,15 @@ func main() {
 	alcotest.DoAndExit(alcotestConfig)
 	logger.Global(logger.New(loggerConfig))
 	defer logger.Close()
+
+	tracerApp, err := tracer.New(tracerConfig)
+	logger.Fatal(err)
+	defer tracerApp.Close()
+	request.AddTracerToDefaultClient(tracerApp.GetProvider())
+
+	go func() {
+		fmt.Println(http.ListenAndServe("localhost:9999", http.DefaultServeMux))
+	}()
 
 	appServer := server.New(appServerConfig)
 	promServer := server.New(promServerConfig)
