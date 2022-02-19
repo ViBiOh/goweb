@@ -28,11 +28,13 @@ spec:
       tag: "202202190850" # {"$imagepolicy": "default:flux-goweb-api:tag"}
     config:
       API_LOGGER_JSON: "true"
+      API_TRACER_URL: http://jaeger.monitoring:14268/api/traces
+      OTEL_SERVICE_NAME: goweb
     ingress:
       enabled: true
       compress: true
       hosts:
-      - api.vibioh.fr
+        - api.vibioh.fr
     canary:
       enabled: true
       url: http://api.vibioh.fr/hello/
