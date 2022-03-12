@@ -54,6 +54,10 @@ func main() {
 	logger.Global(logger.New(loggerConfig))
 	defer logger.Close()
 
+	ballast := make([]byte, 50<<20)
+	func(_ []byte) {
+	}(ballast)
+
 	tracerApp, err := tracer.New(tracerConfig)
 	logger.Fatal(err)
 	defer tracerApp.Close()
