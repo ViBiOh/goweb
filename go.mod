@@ -3,7 +3,7 @@ module github.com/ViBiOh/goweb
 go 1.18
 
 require (
-	github.com/ViBiOh/flags v0.0.1
+	github.com/ViBiOh/flags v0.1.0
 	github.com/ViBiOh/httputils/v4 v4.37.2
 )
 
