@@ -26,7 +26,7 @@ type Config struct {
 // Flags adds flags for configuring package
 func Flags(fs *flag.FlagSet, prefix string) Config {
 	return Config{
-		locationName: flags.New(prefix, "hello", "Location").Default("Europe/Paris", nil).Label("TimeZone for displaying current time").ToString(fs),
+		locationName: flags.String(fs, prefix, "hello", "Location", "TimeZone for displaying current time", "Europe/Paris", nil),
 	}
 }
 
