@@ -5,7 +5,7 @@ updates:
     schedule:
       interval: weekly
       time: "06:00"
-      day: saturday
+      day: friday
     commit-message:
       prefix: chore
       include: scope
