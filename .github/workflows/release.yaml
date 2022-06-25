@@ -1,6 +1,18 @@
 ---
 name: Release
 
+permissions:
+  actions: read
+  checks: read
+  contents: read
+  deployments: read
+  issues: read
+  packages: read/write
+  pages: read
+  pull-requests: read
+  repository-projects: read
+  security-events: read
+
 on:
   release:
     types:
