@@ -7,7 +7,7 @@ permissions:
   contents: read
   deployments: read
   issues: read
-  packages: read/write
+  packages: write
   pages: read
   pull-requests: read
   repository-projects: read
@@ -41,9 +41,12 @@ jobs:
       - name: Assets
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GPG_SIGNING_KEY: ${{ secrets.GPG_SIGNING_KEY }}
+          GPG_SIGN_EMAIL: ci@vibioh.fr
         run: |
-          curl --disable --silent --show-error --location --max-time 30 "https://raw.githubusercontent.com/ViBiOh/scripts/main/bootstrap" | bash -s -- "-c" "release"
+          curl --disable --silent --show-error --location --max-time 30 "https://raw.githubusercontent.com/ViBiOh/scripts/main/bootstrap" | bash -s -- "-c" "release" "gpg"
           export GIT_TAG="$(basename ${{ github.ref }})"
+          gpg_import "${GPG_SIGNING_KEY}"
           scripts/release build assets clean
       - name: Docker
         env:
