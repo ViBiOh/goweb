@@ -2,15 +2,15 @@
 name: CodeQL
 
 permissions:
-  actions: read
-  checks: read
-  contents: read
-  deployments: read
-  issues: read
-  packages: read
-  pages: read
-  pull-requests: read
-  repository-projects: read
+  actions: none
+  checks: none
+  contents: none
+  deployments: none
+  issues: none
+  packages: none
+  pages: none
+  pull-requests: none
+  repository-projects: none
   security-events: write
 
 on:
