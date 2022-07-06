@@ -35,8 +35,5 @@ spec:
       compress: true
       hosts:
         - api.vibioh.fr
-    canary:
-      enabled: true
-      url: http://api.vibioh.fr/hello/
     pprof:
       enabled: true
