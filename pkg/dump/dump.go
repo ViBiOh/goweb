@@ -37,7 +37,7 @@ func dumpRequest(r *http.Request) (string, error) {
 	}
 
 	if err := r.ParseForm(); err != nil {
-		return "", fmt.Errorf("unable to parse form: %s", err)
+		return "", fmt.Errorf("parse form: %s", err)
 	}
 
 	cookies := r.Cookies()
@@ -51,7 +51,7 @@ func dumpRequest(r *http.Request) (string, error) {
 
 	body, err := readContent(r.Body)
 	if err != nil {
-		return "", fmt.Errorf("unable to read content: %s", err)
+		return "", fmt.Errorf("read content: %s", err)
 	}
 
 	var outputPattern bytes.Buffer
