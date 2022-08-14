@@ -12,9 +12,9 @@ services:
       traefik.http.routers.goweb-https.tls: "true"
       traefik.http.routers.goweb-https.tls.certresolver: default
       traefik.http.services.goweb-service.loadbalancer.server.port: "1080"
-    restart: on-failure:5
+    restart: on-failure
     read_only: true
     cpu_shares: 128
     mem_limit: 25165824
     security_opt:
-    - no-new-privileges
+      - no-new-privileges
