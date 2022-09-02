@@ -29,8 +29,6 @@ spec:
     config:
       API_LOGGER_JSON: "true"
       API_TRACER_URL: http://jaeger.monitoring:14268/api/traces
-      GOGC: "100"
-      GOMEMELIMIT: 57MiB
       OTEL_SERVICE_NAME: goweb
     ingress:
       enabled: true
