@@ -25,7 +25,7 @@ spec:
     nameOverride: goweb
     image:
       name: vibioh/goweb
-      tag: "202209241748" # {"$imagepolicy": "default:flux-goweb-api:tag"}
+      tag: "202209300845" # {"$imagepolicy": "default:flux-goweb-api:tag"}
     config:
       API_LOGGER_JSON: "true"
       API_TRACER_URL: http://jaeger.monitoring:14268/api/traces
