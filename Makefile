@@ -8,7 +8,7 @@ endif
 APP_NAME = goweb
 PACKAGES ?= ./...
 
-MAIN_SOURCE = cmd/goweb/api.go
+MAIN_SOURCE = ./cmd/goweb
 MAIN_RUNNER = go run $(MAIN_SOURCE)
 ifeq ($(DEBUG), true)
 	MAIN_RUNNER = dlv debug $(MAIN_SOURCE) --
