@@ -31,6 +31,7 @@ func main() {
 	if err != nil {
 		logger.Fatal(fmt.Errorf("client: %s", err))
 	}
+	defer client.Close()
 
 	appServer := server.New(config.appServer)
 	promServer := server.New(config.promServer)
