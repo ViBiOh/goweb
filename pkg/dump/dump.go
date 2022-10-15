@@ -3,6 +3,7 @@ package dump
 import (
 	"bytes"
 	"fmt"
+	"html"
 	"io"
 	"net/http"
 	"sort"
@@ -23,7 +24,7 @@ func Handler() http.Handler {
 
 		logger.Info("Dump of request\n%s", value)
 
-		if _, err := w.Write([]byte(value)); err != nil {
+		if _, err := w.Write([]byte(html.EscapeString(value))); err != nil {
 			httperror.InternalServerError(w, err)
 		}
 	})
