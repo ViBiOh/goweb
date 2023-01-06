@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"net/http"
 
@@ -27,17 +28,19 @@ func main() {
 		fmt.Println(http.ListenAndServe("localhost:9999", http.DefaultServeMux))
 	}()
 
-	client, err := newClient(config)
+	ctx := context.Background()
+
+	client, err := newClient(ctx, config)
 	if err != nil {
 		logger.Fatal(fmt.Errorf("client: %s", err))
 	}
-	defer client.Close()
+	defer client.Close(ctx)
 
 	appServer := server.New(config.appServer)
 	promServer := server.New(config.promServer)
 
-	go promServer.Start("prometheus", client.health.End(), client.prometheus.Handler())
-	go appServer.Start("http", client.health.End(), httputils.Handler(newPort(config), client.health, recoverer.Middleware, client.prometheus.Middleware, client.tracer.Middleware, owasp.New(config.owasp).Middleware, cors.New(config.cors).Middleware))
+	go promServer.Start(client.health.ContextEnd(), "prometheus", client.prometheus.Handler())
+	go appServer.Start(client.health.ContextEnd(), "http", httputils.Handler(newPort(config), client.health, recoverer.Middleware, client.prometheus.Middleware, client.tracer.Middleware, owasp.New(config.owasp).Middleware, cors.New(config.cors).Middleware))
 
 	client.health.WaitForTermination(appServer.Done())
 	server.GracefulWait(appServer.Done(), promServer.Done())
