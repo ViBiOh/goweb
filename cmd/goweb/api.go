@@ -39,8 +39,8 @@ func main() {
 	appServer := server.New(config.appServer)
 	promServer := server.New(config.promServer)
 
-	go promServer.Start(client.health.ContextEnd(), "prometheus", client.prometheus.Handler())
-	go appServer.Start(client.health.ContextEnd(), "http", httputils.Handler(newPort(config), client.health, recoverer.Middleware, client.prometheus.Middleware, client.tracer.Middleware, owasp.New(config.owasp).Middleware, cors.New(config.cors).Middleware))
+	go promServer.Start(client.health.End(ctx), "prometheus", client.prometheus.Handler())
+	go appServer.Start(client.health.End(ctx), "http", httputils.Handler(newPort(config), client.health, recoverer.Middleware, client.prometheus.Middleware, client.tracer.Middleware, owasp.New(config.owasp).Middleware, cors.New(config.cors).Middleware))
 
 	client.health.WaitForTermination(appServer.Done())
 	server.GracefulWait(appServer.Done(), promServer.Done())
