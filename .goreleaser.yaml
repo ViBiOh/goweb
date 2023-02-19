@@ -1,0 +1,92 @@
+---
+before:
+  hooks:
+    - docker run -v "$(pwd):/tmp/" --rm "alpine" /bin/sh -c 'apk --update add tzdata ca-certificates zip && cd /usr/share/zoneinfo/ && zip -q -r -0 /tmp/zoneinfo.zip . && cp /etc/ssl/certs/ca-certificates.crt /tmp/ca-certificates.crt'
+
+builds:
+  - id: main
+    binary: goweb
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - windows
+      - darwin
+    goarch:
+      - amd64
+      - arm64
+      - arm
+    goarm:
+      - 7
+    ignore:
+      - goos: windows
+        goarch: arm
+      - goos: darwin
+        goarch: arm
+    ldflags:
+      - -s -w
+    main: ./cmd/goweb
+
+signs:
+  - artifacts: checksum
+    args:
+      - "--batch"
+      - "-u"
+      - "{{ .Env.GPG_FINGERPRINT }}"
+      - "--output"
+      - "${signature}"
+      - "--detach-sign"
+      - "${artifact}"
+
+dockers:
+  - image_templates:
+      - "{{ .Env.DOCKER_USER }}/goweb:{{ .Version }}-amd64"
+    use: buildx
+    dockerfile: Dockerfile
+    goos: linux
+    goarch: amd64
+    build_flag_templates:
+      - "--platform=linux/amd64"
+  - image_templates:
+      - "{{ .Env.DOCKER_USER }}/goweb:{{ .Version }}-arm64"
+    use: buildx
+    dockerfile: Dockerfile
+    goos: linux
+    goarch: arm64
+    build_flag_templates:
+      - "--platform=linux/arm64"
+  - image_templates:
+      - "{{ .Env.DOCKER_USER }}/goweb:{{ .Version }}-arm"
+    use: buildx
+    dockerfile: Dockerfile
+    goos: linux
+    goarch: arm
+    goarm: 7
+    build_flag_templates:
+      - "--platform=linux/arm/v7"
+
+docker_manifests:
+  - id: image
+    name_template: "{{ .Env.DOCKER_USER }}/goweb:{{ .Version }}"
+    image_templates:
+      - "{{ .Env.DOCKER_USER }}/goweb:{{ .Version }}-amd64"
+      - "{{ .Env.DOCKER_USER }}/goweb:{{ .Version }}-arm64"
+      - "{{ .Env.DOCKER_USER }}/goweb:{{ .Version }}-arm"
+
+release:
+  github:
+    owner: ViBiOh
+    name: goweb
+
+changelog:
+  use: github
+  sort: asc
+  groups:
+    - title: Features
+      regexp: '^.*?feat(\([[:word:]]+\))??!?:.+$'
+      order: 0
+    - title: "Bug fixes"
+      regexp: '^.*?bug(\([[:word:]]+\))??!?:.+$'
+      order: 1
+    - title: Others
+      order: 999
