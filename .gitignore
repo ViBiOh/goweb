@@ -4,7 +4,6 @@ scripts/
 # Golang
 .env
 bin/
-dist/
 release/
 coverage.*
 profile.out
