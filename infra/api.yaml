@@ -28,7 +28,7 @@ spec:
       tag: "202303051432" # {"$imagepolicy": "default:flux-goweb-api:tag"}
     config:
       API_LOGGER_JSON: "true"
-      API_TRACER_URL: otel-exporter.monitoring:4317
+      API_TRACER_URL: otel-collector.monitoring:4317
       OTEL_SERVICE_NAME: goweb
     ingress:
       enabled: true
