@@ -50,12 +50,12 @@ Usage of api:
         [owasp] Content-Security-Policy {API_CSP} (default "default-src 'self'; base-uri 'self'")
   -frameOptions string
         [owasp] X-Frame-Options {API_FRAME_OPTIONS} (default "deny")
-  -graceDuration string
-        [http] Grace duration when SIGTERM received {API_GRACE_DURATION} (default "30s")
+  -graceDuration duration
+        [http] Grace duration when SIGTERM received {API_GRACE_DURATION} (default 30s)
   -hsts
         [owasp] Indicate Strict Transport Security {API_HSTS} (default true)
-  -idleTimeout string
-        [server] Idle Timeout {API_IDLE_TIMEOUT} (default "2m")
+  -idleTimeout duration
+        [server] Idle Timeout {API_IDLE_TIMEOUT} (default 2m0s)
   -key string
         [server] Key file {API_KEY}
   -location string
@@ -80,32 +80,32 @@ Usage of api:
         [prometheus] Certificate file {API_PROMETHEUS_CERT}
   -prometheusGzip
         [prometheus] Enable gzip compression of metrics output {API_PROMETHEUS_GZIP}
-  -prometheusIdleTimeout string
-        [prometheus] Idle Timeout {API_PROMETHEUS_IDLE_TIMEOUT} (default "10s")
+  -prometheusIdleTimeout duration
+        [prometheus] Idle Timeout {API_PROMETHEUS_IDLE_TIMEOUT} (default 10s)
   -prometheusIgnore string
         [prometheus] Ignored path prefixes for metrics, comma separated {API_PROMETHEUS_IGNORE}
   -prometheusKey string
         [prometheus] Key file {API_PROMETHEUS_KEY}
   -prometheusPort uint
         [prometheus] Listen port (0 to disable) {API_PROMETHEUS_PORT} (default 9090)
-  -prometheusReadTimeout string
-        [prometheus] Read Timeout {API_PROMETHEUS_READ_TIMEOUT} (default "5s")
-  -prometheusShutdownTimeout string
-        [prometheus] Shutdown Timeout {API_PROMETHEUS_SHUTDOWN_TIMEOUT} (default "5s")
-  -prometheusWriteTimeout string
-        [prometheus] Write Timeout {API_PROMETHEUS_WRITE_TIMEOUT} (default "10s")
-  -readTimeout string
-        [server] Read Timeout {API_READ_TIMEOUT} (default "5s")
-  -shutdownTimeout string
-        [server] Shutdown Timeout {API_SHUTDOWN_TIMEOUT} (default "10s")
+  -prometheusReadTimeout duration
+        [prometheus] Read Timeout {API_PROMETHEUS_READ_TIMEOUT} (default 5s)
+  -prometheusShutdownTimeout duration
+        [prometheus] Shutdown Timeout {API_PROMETHEUS_SHUTDOWN_TIMEOUT} (default 5s)
+  -prometheusWriteTimeout duration
+        [prometheus] Write Timeout {API_PROMETHEUS_WRITE_TIMEOUT} (default 10s)
+  -readTimeout duration
+        [server] Read Timeout {API_READ_TIMEOUT} (default 5s)
+  -shutdownTimeout duration
+        [server] Shutdown Timeout {API_SHUTDOWN_TIMEOUT} (default 10s)
   -tracerRate string
-        [tracer] Jaeger sample rate, 'always', 'never' or a float value {API_TRACER_RATE} (default "always")
+        [tracer] OpenTracing sample rate, 'always', 'never' or a float value {API_TRACER_RATE} (default "always")
   -tracerURL string
-        [tracer] Jaeger endpoint URL (e.g. http://jaeger:14268/api/traces) {API_TRACER_URL}
+        [tracer] OpenTracing gRPC endpoint (e.g. http://otel-exporter:4317) {API_TRACER_URL}
   -url string
         [alcotest] URL to check {API_URL}
   -userAgent string
         [alcotest] User-Agent for check {API_USER_AGENT} (default "Alcotest")
-  -writeTimeout string
-        [server] Write Timeout {API_WRITE_TIMEOUT} (default "10s")
+  -writeTimeout duration
+        [server] Write Timeout {API_WRITE_TIMEOUT} (default 10s)
 ```
