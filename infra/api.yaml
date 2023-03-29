@@ -29,6 +29,7 @@ spec:
     config:
       API_LOGGER_JSON: "true"
       API_TRACER_URL: otel-collector.monitoring:4317
+      GOMAXPROCS: "1"
       OTEL_SERVICE_NAME: goweb
     ingress:
       enabled: true
