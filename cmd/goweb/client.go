@@ -13,9 +13,9 @@ import (
 
 type client struct {
 	tracer     tracer.App
-	logger     logger.Logger
-	prometheus prometheus.App
-	health     health.App
+	logger     *logger.Logger
+	prometheus *prometheus.App
+	health     *health.App
 }
 
 func newClient(ctx context.Context, config configuration) (client, error) {
