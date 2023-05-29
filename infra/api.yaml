@@ -25,7 +25,7 @@ spec:
     nameOverride: goweb
     image:
       name: vibioh/goweb
-      tag: "202305281311" # {"$imagepolicy": "default:flux-goweb-api:tag"}
+      tag: "202305291915" # {"$imagepolicy": "default:flux-goweb-api:tag"}
     config:
       API_LOGGER_JSON: "true"
       API_TRACER_URL: otel-collector.observability:4317
