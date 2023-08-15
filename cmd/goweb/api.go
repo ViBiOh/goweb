@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"log"
 	"net/http"
 
 	_ "net/http/pprof"
@@ -19,7 +20,7 @@ import (
 func main() {
 	config, err := newConfig()
 	if err != nil {
-		logger.Fatal(fmt.Errorf("config: %s", err))
+		log.Fatal(fmt.Errorf("config: %s", err))
 	}
 
 	alcotest.DoAndExit(config.alcotest)
