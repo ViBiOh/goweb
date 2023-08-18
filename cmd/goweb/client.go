@@ -6,39 +6,33 @@ import (
 
 	"github.com/ViBiOh/httputils/v4/pkg/health"
 	"github.com/ViBiOh/httputils/v4/pkg/logger"
-	"github.com/ViBiOh/httputils/v4/pkg/prometheus"
 	"github.com/ViBiOh/httputils/v4/pkg/request"
-	"github.com/ViBiOh/httputils/v4/pkg/tracer"
+	"github.com/ViBiOh/httputils/v4/pkg/telemetry"
 )
 
 type client struct {
-	tracer     tracer.App
-	logger     *logger.Logger
-	prometheus *prometheus.App
-	health     *health.App
+	telemetry telemetry.App
+	health    *health.App
 }
 
 func newClient(ctx context.Context, config configuration) (client, error) {
 	var output client
 	var err error
 
-	output.logger = logger.New(config.logger)
-	logger.Global(output.logger)
+	logger.Init(config.logger)
 
-	output.tracer, err = tracer.New(ctx, config.tracer)
+	output.telemetry, err = telemetry.New(ctx, config.telemetry)
 	if err != nil {
-		return output, fmt.Errorf("tracer: %w", err)
+		return output, fmt.Errorf("telemetry: %w", err)
 	}
 
-	request.AddTracerToDefaultClient(output.tracer.GetProvider())
+	request.AddTracerToDefaultClient(output.telemetry.GetMeterProvider(), output.telemetry.GetTraceProvider())
 
-	output.prometheus = prometheus.New(config.prometheus)
 	output.health = health.New(config.health)
 
 	return output, nil
 }
 
 func (c client) Close(ctx context.Context) {
-	c.tracer.Close(ctx)
-	c.logger.Close()
+	c.telemetry.Close(ctx)
 }

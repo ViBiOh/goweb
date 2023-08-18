@@ -4,14 +4,15 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"log/slog"
 	"net/http"
+	"os"
 
 	_ "net/http/pprof"
 
 	"github.com/ViBiOh/httputils/v4/pkg/alcotest"
 	"github.com/ViBiOh/httputils/v4/pkg/cors"
 	"github.com/ViBiOh/httputils/v4/pkg/httputils"
-	"github.com/ViBiOh/httputils/v4/pkg/logger"
 	"github.com/ViBiOh/httputils/v4/pkg/owasp"
 	"github.com/ViBiOh/httputils/v4/pkg/recoverer"
 	"github.com/ViBiOh/httputils/v4/pkg/server"
@@ -33,16 +34,16 @@ func main() {
 
 	client, err := newClient(ctx, config)
 	if err != nil {
-		logger.Fatal(fmt.Errorf("client: %s", err))
+		slog.Error("client", "err", err)
+		os.Exit(1)
 	}
+
 	defer client.Close(ctx)
 
 	appServer := server.New(config.appServer)
-	promServer := server.New(config.promServer)
 
-	go promServer.Start(client.health.End(ctx), "prometheus", client.prometheus.Handler())
-	go appServer.Start(client.health.End(ctx), "http", httputils.Handler(newPort(config), client.health, recoverer.Middleware, client.prometheus.Middleware, client.tracer.Middleware, owasp.New(config.owasp).Middleware, cors.New(config.cors).Middleware))
+	go appServer.Start(client.health.End(ctx), "http", httputils.Handler(newPort(config), client.health, recoverer.Middleware, client.telemetry.Middleware("http"), owasp.New(config.owasp).Middleware, cors.New(config.cors).Middleware))
 
 	client.health.WaitForTermination(appServer.Done())
-	server.GracefulWait(appServer.Done(), promServer.Done())
+	server.GracefulWait(appServer.Done())
 }
