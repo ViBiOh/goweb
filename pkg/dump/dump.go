@@ -5,12 +5,12 @@ import (
 	"fmt"
 	"html"
 	"io"
+	"log/slog"
 	"net/http"
 	"sort"
 	"strings"
 
 	"github.com/ViBiOh/httputils/v4/pkg/httperror"
-	"github.com/ViBiOh/httputils/v4/pkg/logger"
 )
 
 // Handler for dump request. Should be use with net/http
@@ -22,7 +22,7 @@ func Handler() http.Handler {
 			return
 		}
 
-		logger.Info("Dump of request\n%s", value)
+		slog.Info("Dump of request", "content", value)
 
 		if _, err := w.Write([]byte(html.EscapeString(value))); err != nil {
 			httperror.InternalServerError(w, err)
