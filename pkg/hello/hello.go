@@ -18,19 +18,21 @@ type Hello struct {
 }
 
 type Config struct {
-	locationName *string
+	LocationName string
 }
 
 func Flags(fs *flag.FlagSet, prefix string) Config {
-	return Config{
-		locationName: flags.New("Location", "TimeZone for displaying current time").Prefix(prefix).DocPrefix("hello").String(fs, "Europe/Paris", nil),
-	}
+	var config Config
+
+	flags.New("Location", "TimeZone for displaying current time").Prefix(prefix).DocPrefix("hello").StringVar(fs, &config.LocationName, "Europe/Paris", nil)
+
+	return config
 }
 
 func Handler(config Config) http.Handler {
-	location, err := time.LoadLocation(*config.locationName)
+	location, err := time.LoadLocation(config.LocationName)
 	if err != nil {
-		slog.Error("loading location", "err", err, "name", *config.locationName)
+		slog.Error("loading location", "err", err, "name", config.LocationName)
 	}
 
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

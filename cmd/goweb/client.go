@@ -11,8 +11,8 @@ import (
 )
 
 type client struct {
-	telemetry telemetry.App
-	health    *health.App
+	telemetry telemetry.Service
+	health    *health.Service
 }
 
 func newClient(ctx context.Context, config configuration) (client, error) {
