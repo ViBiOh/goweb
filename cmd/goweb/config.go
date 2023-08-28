@@ -16,14 +16,14 @@ import (
 )
 
 type configuration struct {
-	alcotest  alcotest.Config
-	telemetry telemetry.Config
-	hello     hello.Config
-	logger    logger.Config
-	cors      cors.Config
-	owasp     owasp.Config
-	appServer server.Config
-	health    health.Config
+	alcotest  *alcotest.Config
+	telemetry *telemetry.Config
+	hello     *hello.Config
+	logger    *logger.Config
+	cors      *cors.Config
+	owasp     *owasp.Config
+	appServer *server.Config
+	health    *health.Config
 }
 
 func newConfig() (configuration, error) {

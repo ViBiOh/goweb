@@ -21,15 +21,15 @@ type Config struct {
 	LocationName string
 }
 
-func Flags(fs *flag.FlagSet, prefix string) Config {
+func Flags(fs *flag.FlagSet, prefix string) *Config {
 	var config Config
 
 	flags.New("Location", "TimeZone for displaying current time").Prefix(prefix).DocPrefix("hello").StringVar(fs, &config.LocationName, "Europe/Paris", nil)
 
-	return config
+	return &config
 }
 
-func Handler(config Config) http.Handler {
+func Handler(config *Config) http.Handler {
 	location, err := time.LoadLocation(config.LocationName)
 	if err != nil {
 		slog.Error("loading location", "err", err, "name", config.LocationName)
