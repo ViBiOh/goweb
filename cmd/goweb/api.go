@@ -7,6 +7,7 @@ import (
 	"log/slog"
 	"net/http"
 	"os"
+	"syscall"
 
 	_ "net/http/pprof"
 
@@ -44,6 +45,6 @@ func main() {
 
 	go appServer.Start(client.health.End(ctx), "http", httputils.Handler(newPort(config), client.health, recoverer.Middleware, client.telemetry.Middleware("http"), owasp.New(config.owasp).Middleware, cors.New(config.cors).Middleware))
 
-	client.health.WaitForTermination(appServer.Done())
+	client.health.WaitForTermination(appServer.Done(), syscall.SIGTERM)
 	server.GracefulWait(appServer.Done())
 }
