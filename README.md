@@ -41,7 +41,7 @@ Usage of api:
   --corsOrigin        string    [cors] Access-Control-Allow-Origin ${API_CORS_ORIGIN} (default "*")
   --csp               string    [owasp] Content-Security-Policy ${API_CSP} (default "default-src 'self'; base-uri 'self'")
   --frameOptions      string    [owasp] X-Frame-Options ${API_FRAME_OPTIONS} (default "deny")
-  --graceDuration     duration  [http] Grace duration when SIGTERM received ${API_GRACE_DURATION} (default 30s)
+  --graceDuration     duration  [http] Grace duration when signal received ${API_GRACE_DURATION} (default 30s)
   --hsts                        [owasp] Indicate Strict Transport Security ${API_HSTS} (default true)
   --idleTimeout       duration  [server] Idle Timeout ${API_IDLE_TIMEOUT} (default 2m0s)
   --key               string    [server] Key file ${API_KEY}
