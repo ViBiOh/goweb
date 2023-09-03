@@ -1,6 +1,7 @@
 module github.com/ViBiOh/goweb
 
 go 1.21
+toolchain go1.21.0.0
 
 require (
 	github.com/ViBiOh/flags v1.4.1
