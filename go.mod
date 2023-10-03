@@ -6,7 +6,7 @@ toolchain go1.21.0
 
 require (
 	github.com/ViBiOh/flags v1.4.1
-	github.com/ViBiOh/httputils/v4 v4.66.4
+	github.com/ViBiOh/httputils/v4 v4.66.5
 	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.45.0
 )
 
