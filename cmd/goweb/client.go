@@ -28,7 +28,7 @@ func newClient(ctx context.Context, config configuration) (client, error) {
 
 	request.AddOpenTelemetryToDefaultClient(output.telemetry.MeterProvider(), output.telemetry.TracerProvider())
 
-	output.health = health.New(config.health)
+	output.health = health.New(ctx, config.health)
 
 	return output, nil
 }
