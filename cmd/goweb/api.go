@@ -42,9 +42,9 @@ func main() {
 
 	appServer := server.New(config.appServer)
 
-	go appServer.Start(client.health.EndCtx(), "http", httputils.Handler(newPort(config), client.health, recoverer.Middleware, client.telemetry.Middleware("http"), owasp.New(config.owasp).Middleware, cors.New(config.cors).Middleware))
+	go appServer.Start(client.health.EndCtx(), httputils.Handler(newPort(config), client.health, recoverer.Middleware, client.telemetry.Middleware("http"), owasp.New(config.owasp).Middleware, cors.New(config.cors).Middleware))
 
 	client.health.WaitForTermination(appServer.Done())
 
-	appServer.Stop(ctx)
+	server.GracefulWait(appServer.Done())
 }
