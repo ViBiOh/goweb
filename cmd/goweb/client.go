@@ -11,8 +11,8 @@ import (
 )
 
 type client struct {
-	telemetry telemetry.Service
 	health    *health.Service
+	telemetry telemetry.Service
 }
 
 func newClient(ctx context.Context, config configuration) (client, error) {
@@ -26,6 +26,7 @@ func newClient(ctx context.Context, config configuration) (client, error) {
 		return output, fmt.Errorf("telemetry: %w", err)
 	}
 
+	logger.AddOpenTelemetryToDefaultLogger(output.telemetry)
 	request.AddOpenTelemetryToDefaultClient(output.telemetry.MeterProvider(), output.telemetry.TracerProvider())
 
 	output.health = health.New(ctx, config.health)
