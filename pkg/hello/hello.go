@@ -32,7 +32,7 @@ func Flags(fs *flag.FlagSet, prefix string) *Config {
 func Handler(config *Config) http.Handler {
 	location, err := time.LoadLocation(config.LocationName)
 	if err != nil {
-		slog.Error("loading location", "err", err, "name", config.LocationName)
+		slog.Error("loading location", "error", err, "name", config.LocationName)
 	}
 
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

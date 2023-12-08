@@ -34,7 +34,7 @@ func main() {
 
 	client, err := newClient(ctx, config)
 	if err != nil {
-		slog.Error("client", "err", err)
+		slog.Error("client", "error", err)
 		os.Exit(1)
 	}
 
