@@ -25,7 +25,7 @@ spec:
     nameOverride: goweb
     image:
       name: vibioh/goweb
-      tag: "202312110934" # {"$imagepolicy": "default:flux-goweb-api:tag"}
+      tag: "202312120926" # {"$imagepolicy": "default:flux-goweb-api:tag"}
     config:
       API_LOGGER_JSON: "true"
       API_TELEMETRY_URL: datadog.observability:4317
