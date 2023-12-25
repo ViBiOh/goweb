@@ -4,15 +4,14 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"log/slog"
 	"net/http"
-	"os"
 
 	_ "net/http/pprof"
 
 	"github.com/ViBiOh/httputils/v4/pkg/alcotest"
 	"github.com/ViBiOh/httputils/v4/pkg/cors"
 	"github.com/ViBiOh/httputils/v4/pkg/httputils"
+	"github.com/ViBiOh/httputils/v4/pkg/logger"
 	"github.com/ViBiOh/httputils/v4/pkg/owasp"
 	"github.com/ViBiOh/httputils/v4/pkg/recoverer"
 	"github.com/ViBiOh/httputils/v4/pkg/server"
@@ -33,10 +32,7 @@ func main() {
 	ctx := context.Background()
 
 	client, err := newClient(ctx, config)
-	if err != nil {
-		slog.Error("client", "error", err)
-		os.Exit(1)
-	}
+	logger.FatalfOnErr(ctx, err, "client")
 
 	defer client.Close(ctx)
 
