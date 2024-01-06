@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: app
-      version: "0.0.92"
+      version: "0.0.94"
       sourceRef:
         kind: HelmRepository
         name: vibioh
@@ -33,7 +33,7 @@ spec:
       OTEL_RESOURCE_ATTRIBUTES: env=production,git.repository_url=github.com/ViBiOh/goweb
       OTEL_SERVICE_NAME: goweb
     ingress:
-      enabled: false
+      enabled: true
       compress: true
       hosts:
         - api.vibioh.fr
