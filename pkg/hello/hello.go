@@ -11,6 +11,7 @@ import (
 
 	"github.com/ViBiOh/flags"
 	"github.com/ViBiOh/httputils/v4/pkg/httpjson"
+	"github.com/ViBiOh/httputils/v4/pkg/telemetry"
 )
 
 type Hello struct {
@@ -36,6 +37,10 @@ func Handler(config *Config) http.Handler {
 	}
 
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		ctx := r.Context()
+
+		telemetry.SetRouteTag(ctx, "/hello")
+
 		if r.Method != http.MethodGet {
 			w.WriteHeader(http.StatusMethodNotAllowed)
 			return
@@ -46,6 +51,6 @@ func Handler(config *Config) http.Handler {
 			name = "World"
 		}
 
-		httpjson.Write(r.Context(), w, http.StatusOK, Hello{fmt.Sprintf("Hello %s, current time in %s is %v !", name, location.String(), time.Now().In(location))})
+		httpjson.Write(ctx, w, http.StatusOK, Hello{fmt.Sprintf("Hello %s, current time in %s is %v !", name, location.String(), time.Now().In(location))})
 	})
 }

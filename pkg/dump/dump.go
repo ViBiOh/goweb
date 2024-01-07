@@ -11,12 +11,15 @@ import (
 	"strings"
 
 	"github.com/ViBiOh/httputils/v4/pkg/httperror"
+	"github.com/ViBiOh/httputils/v4/pkg/telemetry"
 )
 
 // Handler for dump request. Should be use with net/http
 func Handler() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
+
+		telemetry.SetRouteTag(ctx, "/dump")
 
 		value, err := dumpRequest(r)
 		if err != nil {
