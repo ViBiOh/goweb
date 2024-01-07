@@ -33,7 +33,7 @@ spec:
       OTEL_RESOURCE_ATTRIBUTES: env=production,git.repository_url=github.com/ViBiOh/goweb
       OTEL_SERVICE_NAME: goweb
     ingress:
-      enabled: true
+      enabled: false
       compress: true
       hosts:
         - api.vibioh.fr
