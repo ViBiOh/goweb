@@ -27,7 +27,7 @@ func Handler() http.Handler {
 			return
 		}
 
-		slog.InfoContext(ctx, "Dump of request", "content", value)
+		slog.LogAttrs(ctx, slog.LevelInfo, "Dump of request", slog.String("content", value))
 
 		if _, err := w.Write([]byte(html.EscapeString(value))); err != nil {
 			httperror.InternalServerError(ctx, w, err)

@@ -1,6 +1,7 @@
 package hello
 
 import (
+	"context"
 	"flag"
 	"fmt"
 	"html"
@@ -33,7 +34,7 @@ func Flags(fs *flag.FlagSet, prefix string) *Config {
 func Handler(config *Config) http.Handler {
 	location, err := time.LoadLocation(config.LocationName)
 	if err != nil {
-		slog.Error("loading location", "error", err, "name", config.LocationName)
+		slog.LogAttrs(context.Background(), slog.LevelError, "loading location", slog.String("name", config.LocationName), slog.Any("error", err))
 	}
 
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
