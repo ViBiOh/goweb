@@ -9,17 +9,17 @@ import (
 )
 
 const (
-	helloPath = "/hello/"
-	dumpPath  = "/dump/"
-	delayPath = "/delay/"
+	helloPath = "/hello/{name...}"
+	dumpPath  = "/dump"
+	delayPath = "/delay"
 )
 
 func newPort(config configuration) http.Handler {
 	mux := http.NewServeMux()
 
-	mux.Handle(helloPath, http.StripPrefix(helloPath, hello.Handler(config.hello)))
-	mux.Handle(dumpPath, http.StripPrefix(dumpPath, dump.Handler()))
-	mux.Handle(delayPath, http.StripPrefix(delayPath, delay.Handler()))
+	mux.Handle(helloPath, hello.Handler(config.hello))
+	mux.Handle(dumpPath, dump.Handler())
+	mux.Handle(delayPath, delay.Handler())
 
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusTeapot)

@@ -4,10 +4,8 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	"html"
 	"log/slog"
 	"net/http"
-	"strings"
 	"time"
 
 	"github.com/ViBiOh/flags"
@@ -47,8 +45,8 @@ func Handler(config *Config) http.Handler {
 			return
 		}
 
-		name := strings.TrimPrefix(html.EscapeString(r.URL.Path), "/")
-		if name == "" {
+		name := r.PathValue("name")
+		if len(name) == 0 {
 			name = "World"
 		}
 
