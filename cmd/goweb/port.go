@@ -10,8 +10,8 @@ import (
 
 const (
 	helloPath = "/hello/{name...}"
-	dumpPath  = "/dump"
-	delayPath = "/delay"
+	dumpPath  = "/dump/"
+	delayPath = "/delay/"
 )
 
 func newPort(config configuration) http.Handler {
