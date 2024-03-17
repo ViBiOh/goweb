@@ -53,3 +53,5 @@ spec:
       OTEL_RESOURCE_ATTRIBUTES: env=production,git.repository_url=github.com/ViBiOh/goweb
     pprof:
       enabled: true
+    autoscaling:
+      enabled: false
