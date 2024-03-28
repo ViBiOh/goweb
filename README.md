@@ -2,7 +2,6 @@
 
 [![Build](https://github.com/ViBiOh/goweb/workflows/Build/badge.svg)](https://github.com/ViBiOh/goweb/actions)
 [![codecov](https://codecov.io/gh/ViBiOh/goweb/branch/main/graph/badge.svg)](https://codecov.io/gh/ViBiOh/goweb)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ViBiOh_goweb&metric=alert_status)](https://sonarcloud.io/dashboard?id=ViBiOh_goweb)
 
 ## Getting started
 
