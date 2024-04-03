@@ -17,7 +17,7 @@ import (
 )
 
 func Handler(meterProvider metric.MeterProvider) http.Handler {
-	counter, err := meterProvider.Meter("dd.goweb").Int64Counter("dump")
+	counter, err := meterProvider.Meter("github.com/ViBiOh/goweb").Int64Counter("dd.goweb.dump")
 	if err != nil {
 		slog.LogAttrs(context.Background(), slog.LevelError, "create dump counter", slog.Any("error", err))
 	}
