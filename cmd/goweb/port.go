@@ -14,11 +14,11 @@ const (
 	delayPath = "/delay/"
 )
 
-func newPort(config configuration) http.Handler {
+func newPort(config configuration, client client) http.Handler {
 	mux := http.NewServeMux()
 
 	mux.Handle(helloPath, hello.Handler(config.hello))
-	mux.Handle(dumpPath, dump.Handler())
+	mux.Handle(dumpPath, dump.Handler(client.telemetry.MeterProvider()))
 	mux.Handle(delayPath, delay.Handler())
 
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {

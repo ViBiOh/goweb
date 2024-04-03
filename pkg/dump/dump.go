@@ -2,6 +2,7 @@ package dump
 
 import (
 	"bytes"
+	"context"
 	"fmt"
 	"html"
 	"io"
@@ -12,10 +13,15 @@ import (
 
 	"github.com/ViBiOh/httputils/v4/pkg/httperror"
 	"github.com/ViBiOh/httputils/v4/pkg/telemetry"
+	"go.opentelemetry.io/otel/metric"
 )
 
-// Handler for dump request. Should be use with net/http
-func Handler() http.Handler {
+func Handler(meterProvider metric.MeterProvider) http.Handler {
+	counter, err := meterProvider.Meter("dd.goweb").Int64Counter("dump")
+	if err != nil {
+		slog.LogAttrs(context.Background(), slog.LevelError, "create dump counter", slog.Any("error", err))
+	}
+
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
 
@@ -26,6 +32,8 @@ func Handler() http.Handler {
 			httperror.BadRequest(ctx, w, err)
 			return
 		}
+
+		counter.Add(ctx, 1)
 
 		slog.LogAttrs(ctx, slog.LevelInfo, "Dump of request", slog.String("content", value))
 
