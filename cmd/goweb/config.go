@@ -26,11 +26,11 @@ type configuration struct {
 	health    *health.Config
 }
 
-func newConfig() (configuration, error) {
+func newConfig() configuration {
 	fs := flag.NewFlagSet("api", flag.ExitOnError)
 	fs.Usage = flags.Usage(fs)
 
-	return configuration{
+	config := configuration{
 		appServer: server.Flags(fs, ""),
 		health:    health.Flags(fs, ""),
 		alcotest:  alcotest.Flags(fs, ""),
@@ -40,5 +40,9 @@ func newConfig() (configuration, error) {
 		cors:      cors.Flags(fs, "cors"),
 
 		hello: hello.Flags(fs, ""),
-	}, fs.Parse(os.Args[1:])
+	}
+
+	_ = fs.Parse(os.Args[1:])
+
+	return config
 }
