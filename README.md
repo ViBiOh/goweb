@@ -1,7 +1,6 @@
 # goweb
 
 [![Build](https://github.com/ViBiOh/goweb/workflows/Build/badge.svg)](https://github.com/ViBiOh/goweb/actions)
-[![codecov](https://codecov.io/gh/ViBiOh/goweb/branch/main/graph/badge.svg)](https://codecov.io/gh/ViBiOh/goweb)
 
 ## Getting started
 
