@@ -49,6 +49,7 @@ spec:
             fieldPath: metadata.labels['tags.datadoghq.com/service']
     config:
       API_LOGGER_JSON: "true"
+      API_PPROF_AGENT: http://datadog.observability:8126
       API_TELEMETRY_URL: datadog.observability:4317
       OTEL_RESOURCE_ATTRIBUTES: env=production,git.repository_url=github.com/ViBiOh/goweb
     pprof:

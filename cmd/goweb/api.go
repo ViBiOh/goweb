@@ -33,6 +33,8 @@ func main() {
 
 	appServer := server.New(config.appServer)
 
+	go client.pprof.Start(client.health.DoneCtx())
+
 	go appServer.Start(client.health.EndCtx(), httputils.Handler(newPort(config, client), client.health, recoverer.Middleware, client.telemetry.Middleware("http"), owasp.New(config.owasp).Middleware, cors.New(config.cors).Middleware))
 
 	client.health.WaitForTermination(appServer.Done())

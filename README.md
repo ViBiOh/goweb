@@ -49,12 +49,15 @@ Usage of api:
   --loggerLevelKey    string    [logger] Key for level in JSON ${API_LOGGER_LEVEL_KEY} (default "level")
   --loggerMessageKey  string    [logger] Key for message in JSON ${API_LOGGER_MESSAGE_KEY} (default "msg")
   --loggerTimeKey     string    [logger] Key for timestamp in JSON ${API_LOGGER_TIME_KEY} (default "time")
+  --name              string    [server] Name ${API_NAME} (default "http")
   --okStatus          int       [http] Healthy HTTP Status code ${API_OK_STATUS} (default 204)
   --port              uint      [server] Listen port (0 to disable) ${API_PORT} (default 1080)
+  --pprofAgent        string    [pprof] URL of the Datadog Trace Agent (e.g. http://datadog.observability:8126) ${API_PPROF_AGENT}
   --readTimeout       duration  [server] Read Timeout ${API_READ_TIMEOUT} (default 5s)
   --shutdownTimeout   duration  [server] Shutdown Timeout ${API_SHUTDOWN_TIMEOUT} (default 10s)
   --telemetryRate     string    [telemetry] OpenTelemetry sample rate, 'always', 'never' or a float value ${API_TELEMETRY_RATE} (default "always")
   --telemetryURL      string    [telemetry] OpenTelemetry gRPC endpoint (e.g. otel-exporter:4317) ${API_TELEMETRY_URL}
+  --telemetryUint64             [telemetry] Change OpenTelemetry Trace ID format to an unsigned int 64 ${API_TELEMETRY_UINT64} (default true)
   --url               string    [alcotest] URL to check ${API_URL}
   --userAgent         string    [alcotest] User-Agent for check ${API_USER_AGENT} (default "Alcotest")
   --writeTimeout      duration  [server] Write Timeout ${API_WRITE_TIMEOUT} (default 10s)
