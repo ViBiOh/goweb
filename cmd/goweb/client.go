@@ -39,6 +39,10 @@ func newClient(ctx context.Context, config configuration) (client, error) {
 	return output, nil
 }
 
+func (c client) Start() {
+	go c.pprof.Start(c.health.DoneCtx())
+}
+
 func (c client) Close(ctx context.Context) {
 	c.telemetry.Close(ctx)
 }

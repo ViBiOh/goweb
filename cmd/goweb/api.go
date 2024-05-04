@@ -2,10 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
-	"net/http"
-
-	_ "net/http/pprof"
 
 	"github.com/ViBiOh/httputils/v4/pkg/alcotest"
 	"github.com/ViBiOh/httputils/v4/pkg/cors"
@@ -20,24 +16,19 @@ func main() {
 	config := newConfig()
 	alcotest.DoAndExit(config.alcotest)
 
-	go func() {
-		fmt.Println(http.ListenAndServe("localhost:9999", http.DefaultServeMux))
-	}()
-
 	ctx := context.Background()
 
-	client, err := newClient(ctx, config)
+	clients, err := newClient(ctx, config)
 	logger.FatalfOnErr(ctx, err, "client")
 
-	defer client.Close(ctx)
+	defer clients.Close(ctx)
+	go clients.Start()
 
 	appServer := server.New(config.appServer)
 
-	go client.pprof.Start(client.health.DoneCtx())
+	go appServer.Start(clients.health.EndCtx(), httputils.Handler(newPort(config, clients), clients.health, recoverer.Middleware, clients.telemetry.Middleware("http"), owasp.New(config.owasp).Middleware, cors.New(config.cors).Middleware))
 
-	go appServer.Start(client.health.EndCtx(), httputils.Handler(newPort(config, client), client.health, recoverer.Middleware, client.telemetry.Middleware("http"), owasp.New(config.owasp).Middleware, cors.New(config.cors).Middleware))
-
-	client.health.WaitForTermination(appServer.Done())
+	clients.health.WaitForTermination(appServer.Done())
 
 	server.GracefulWait(appServer.Done())
 }

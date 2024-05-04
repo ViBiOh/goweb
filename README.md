@@ -53,6 +53,7 @@ Usage of api:
   --okStatus          int       [http] Healthy HTTP Status code ${API_OK_STATUS} (default 204)
   --port              uint      [server] Listen port (0 to disable) ${API_PORT} (default 1080)
   --pprofAgent        string    [pprof] URL of the Datadog Trace Agent (e.g. http://datadog.observability:8126) ${API_PPROF_AGENT}
+  --pprofPort         int       [pprof] Port of the HTTP server (0 to disable) ${API_PPROF_PORT} (default 0)
   --readTimeout       duration  [server] Read Timeout ${API_READ_TIMEOUT} (default 5s)
   --shutdownTimeout   duration  [server] Shutdown Timeout ${API_SHUTDOWN_TIMEOUT} (default 10s)
   --telemetryRate     string    [telemetry] OpenTelemetry sample rate, 'always', 'never' or a float value ${API_TELEMETRY_RATE} (default "always")
