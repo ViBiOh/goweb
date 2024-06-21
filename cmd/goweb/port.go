@@ -8,18 +8,12 @@ import (
 	"github.com/ViBiOh/goweb/pkg/hello"
 )
 
-const (
-	helloPath = "/hello/{name...}"
-	dumpPath  = "/dump/"
-	delayPath = "/delay/"
-)
-
 func newPort(config configuration, client client) http.Handler {
 	mux := http.NewServeMux()
 
-	mux.Handle(helloPath, hello.Handler(config.hello))
-	mux.Handle(dumpPath, dump.Handler(client.telemetry.MeterProvider()))
-	mux.Handle(delayPath, delay.Handler())
+	mux.Handle("GET /hello/{name...}", hello.Handler(config.hello))
+	mux.Handle("/dump/", dump.Handler(client.telemetry.MeterProvider()))
+	mux.Handle("/delay/", delay.Handler())
 
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusTeapot)

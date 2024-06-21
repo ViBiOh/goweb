@@ -37,13 +37,7 @@ func Handler(config *Config) http.Handler {
 
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
-
 		telemetry.SetRouteTag(ctx, "/hello")
-
-		if r.Method != http.MethodGet {
-			w.WriteHeader(http.StatusMethodNotAllowed)
-			return
-		}
 
 		name := r.PathValue("name")
 		if len(name) == 0 {
