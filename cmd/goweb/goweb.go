@@ -17,7 +17,7 @@ func main() {
 
 	ctx := context.Background()
 
-	clients, err := newClient(ctx, config)
+	clients, err := newClients(ctx, config)
 	logger.FatalfOnErr(ctx, err, "client")
 
 	defer clients.Close(ctx)
