@@ -25,11 +25,11 @@ spec:
     nameOverride: goweb
     image:
       name: vibioh/goweb
-      tag: "202406280843" # {"$imagepolicy": "default:flux-goweb-api:tag"}
+      tag: "202406281017" # {"$imagepolicy": "default:flux-goweb-api:tag"}
     labels:
       tags.datadoghq.com/env: "production"
       tags.datadoghq.com/service: "goweb"
-      tags.datadoghq.com/version: "202406280843" # {"$imagepolicy": "default:flux-goweb-api:tag"}
+      tags.datadoghq.com/version: "202406281017" # {"$imagepolicy": "default:flux-goweb-api:tag"}
     env:
       - name: GOMAXPROCS
         valueFrom:
