@@ -54,3 +54,10 @@ spec:
       OTEL_RESOURCE_ATTRIBUTES: env=production,git.repository_url=github.com/ViBiOh/goweb
     autoscaling:
       enabled: false
+    ingress:
+      enabled: true
+      compress: true
+      tls:
+        enabled: true
+      hosts:
+        - api.vibioh.fr
