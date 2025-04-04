@@ -88,13 +88,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Publish
-        if: env.DOCKER_USER && env.DOCKER_PASS
+        if: env.DOCKER_REGISTRY && env.DOCKER_SECRET_KEY
         env:
-          DOCKER_USER: ${{ secrets.DOCKER_USER }}
-          DOCKER_PASS: ${{ secrets.DOCKER_PASS }}
+          DOCKER_REGISTRY: ${{ secrets.DOCKER_REGISTRY }}
+          DOCKER_SECRET_KEY: ${{ secrets.DOCKER_SECRET_KEY }}
         run: |
           curl --disable --silent --show-error --location --max-time 30 "https://raw.githubusercontent.com/ViBiOh/scripts/main/bootstrap.sh" | bash -s -- "-c" "docker_promote.sh"
-          scripts/docker_promote.sh -d "$(make version-date)" "${{ secrets.DOCKER_USER }}/$(make name)" "$(make version)"
+          docker login "${DOCKER_REGISTRY}" -u nologin --password-stdin <<< "${DOCKER_SECRET_KEY}"
+          scripts/docker_promote.sh -d "$(make version-date)" "${{ secrets.DOCKER_REGISTRY }}/$(make name)" "$(make version)"
       - name: Flux
         env:
           FLUX_TOKEN: ${{ secrets.FLUX_TOKEN }}
