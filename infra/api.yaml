@@ -24,8 +24,8 @@ spec:
   values:
     nameOverride: goweb
     image:
-      name: vibioh/goweb
-      tag: "202503241405" # {"$imagepolicy": "default:flux-goweb-api:tag"}
+      name: rg.fr-par.scw.cloud/vibioh/goweb
+      tag: "202504062105" # {"$imagepolicy": "default:flux-goweb-api:tag"}
     labels:
       tags.datadoghq.com/env: "production"
       tags.datadoghq.com/service: "goweb"
