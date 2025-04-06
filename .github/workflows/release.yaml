@@ -59,6 +59,7 @@ jobs:
       - name: Docker
         if: env.DOCKER_REGISTRY && env.SCW_SECRET_KEY
         env:
+          DOCKER_REGISTRY: ${{ vars.DOCKER_REGISTRY }}
           SCW_ACCESS_KEY: ${{ secrets.SCW_ACCESS_KEY }}
           SCW_SECRET_KEY: ${{ secrets.SCW_SECRET_KEY }}
         run: |
