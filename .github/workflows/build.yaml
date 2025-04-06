@@ -98,7 +98,7 @@ jobs:
         run: |
           curl --disable --silent --show-error --location --max-time 30 "https://raw.githubusercontent.com/ViBiOh/scripts/main/bootstrap.sh" | bash -s -- "-c" "docker_promote.sh"
           docker login "${DOCKER_REGISTRY}/${DOCKER_NAMESPACE}" -u nologin --password-stdin <<< "${SCW_SECRET_KEY}"
-          scripts/docker_promote.sh -d "$(make version-date)" "${DOCKER_REGISTRY}/${DOCKER_NAMESPACE}/$(make name)" "$(make version)"
+          scripts/docker_promote.sh -d "$(make version-date)" "${DOCKER_NAMESPACE}/$(make name)" "$(make version)"
       - name: Flux
         env:
           FLUX_TOKEN: ${{ secrets.FLUX_TOKEN }}

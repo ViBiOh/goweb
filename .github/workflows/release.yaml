@@ -66,4 +66,4 @@ jobs:
         run: |
           curl --disable --silent --show-error --location --max-time 30 "https://raw.githubusercontent.com/ViBiOh/scripts/main/bootstrap.sh" | bash -s -- "-c" "docker_promote.sh"
           docker login "${DOCKER_REGISTRY}/${DOCKER_NAMESPACE}" -u nologin --password-stdin <<< "${SCW_SECRET_KEY}"
-          scripts/docker_promote.sh "${DOCKER_REGISTRY}/${DOCKER_NAMESPACE}/$(make name)" "$(make version-date)" "$(basename ${{ github.ref }})"
+          scripts/docker_promote.sh "${DOCKER_NAMESPACE}/$(make name)" "$(make version-date)" "$(basename ${{ github.ref }})"
