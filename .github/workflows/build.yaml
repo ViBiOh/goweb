@@ -71,9 +71,8 @@ jobs:
       - name: Setup Docker
         uses: docker/setup-buildx-action@v3
       - name: Docker
-        if: env.DOCKER_REGISTRY && env.SCW_SECRET_KEY
+        if: env.SCW_SECRET_KEY
         env:
-          SCW_ACCESS_KEY: ${{ secrets.SCW_ACCESS_KEY }}
           SCW_SECRET_KEY: ${{ secrets.SCW_SECRET_KEY }}
         run: |
           docker login "${DOCKER_REGISTRY}" -u nologin --password-stdin <<< "${SCW_SECRET_KEY}"
@@ -88,7 +87,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Publish
-        if: env.DOCKER_REGISTRY && env.SCW_SECRET_KEY
+        if: env.SCW_SECRET_KEY
         env:
           SCW_ACCESS_KEY: ${{ secrets.SCW_ACCESS_KEY }}
           SCW_SECRET_KEY: ${{ secrets.SCW_SECRET_KEY }}
