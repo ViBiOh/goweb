@@ -109,7 +109,7 @@ func getBufferContent(content map[string][]string) string {
 
 func readContent(body io.ReadCloser) (content []byte, err error) {
 	if body == nil {
-		return
+		return content, err
 	}
 
 	defer func() {
@@ -122,6 +122,5 @@ func readContent(body io.ReadCloser) (content []byte, err error) {
 		}
 	}()
 
-	content, err = io.ReadAll(body)
-	return
+	return io.ReadAll(body)
 }
