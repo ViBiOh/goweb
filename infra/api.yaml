@@ -25,11 +25,11 @@ spec:
     nameOverride: goweb
     image:
       name: rg.fr-par.scw.cloud/vibioh/goweb
-      tag: "202510170801" # {"$imagepolicy": "default:flux-goweb-api:tag"}
+      tag: "202510220846" # {"$imagepolicy": "default:flux-goweb-api:tag"}
     labels:
       tags.datadoghq.com/env: "production"
       tags.datadoghq.com/service: "goweb"
-      tags.datadoghq.com/version: "202510170801" # {"$imagepolicy": "default:flux-goweb-api:tag"}
+      tags.datadoghq.com/version: "202510220846" # {"$imagepolicy": "default:flux-goweb-api:tag"}
     env:
       - name: GOMEMLIMIT
         valueFrom:
