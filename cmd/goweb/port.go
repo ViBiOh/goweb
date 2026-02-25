@@ -14,7 +14,7 @@ func newPort(config configuration, clients clients, services services) http.Hand
 
 	mux.Handle("GET /hello/{name...}", hello.Handler(config.hello))
 	mux.Handle("/dump/", dump.Handler(clients.telemetry.MeterProvider()))
-	mux.Handle("GET /delay/{duration...}", http.HandlerFunc(delay.Handle))
+	mux.Handle("GET /delay/{duration...}", delay.Handler())
 
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusTeapot)
