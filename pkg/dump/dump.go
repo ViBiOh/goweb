@@ -3,6 +3,7 @@ package dump
 import (
 	"bytes"
 	"context"
+	"errors"
 	"fmt"
 	"html"
 	"io"
@@ -117,7 +118,7 @@ func readContent(body io.ReadCloser) (content []byte, err error) {
 			if err == nil {
 				err = closeErr
 			} else {
-				err = fmt.Errorf("%s: %w", err, closeErr)
+				err = errors.Join(err, closeErr)
 			}
 		}
 	}()
